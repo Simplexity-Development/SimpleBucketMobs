@@ -1,3 +1,5 @@
+version = "dev"
+
 plugins {
     `java-library`
     id("io.papermc.paperweight.userdev") version "1.4.1"
@@ -19,8 +21,6 @@ dependencies {
     compileOnly("io.papermc.paper:paper-api:1.19.3-R0.1-SNAPSHOT")
     paperDevBundle("1.19.3-R0.1-SNAPSHOT")
 }
-
-version = "a"
 
 tasks {
     assemble {
