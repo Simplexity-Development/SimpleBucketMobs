@@ -1,7 +1,10 @@
 name: SimpleBucketMobs
 group: ADHDMC
-version: '${project.version}'
+version: "${version}"
 main: adhdmc.simplebucketmobs.SimpleBucketMobs
 api-version: 1.19
 authors: [ Rhythmic, Peashooter101 ]
 description: Shove your mobs into buckets like Axolotls! :D
+commands:
+  debucket:
+    description: "Get information on the bucket in your hands..."

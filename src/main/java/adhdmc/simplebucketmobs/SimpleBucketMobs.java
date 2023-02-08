@@ -1,5 +1,6 @@
 package adhdmc.simplebucketmobs;
 
+import adhdmc.simplebucketmobs.command.DebucketCommand;
 import adhdmc.simplebucketmobs.listener.BucketMob;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
@@ -13,6 +14,7 @@ public final class SimpleBucketMobs extends JavaPlugin {
     public void onEnable() {
         plugin = this;
         Bukkit.getPluginManager().registerEvents(new BucketMob(), this);
+        this.getCommand("debucket").setExecutor(new DebucketCommand());
     }
 
     @Override

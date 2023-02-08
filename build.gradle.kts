@@ -1,6 +1,7 @@
 plugins {
     `java-library`
     id("io.papermc.paperweight.userdev") version "1.4.1"
+    id("xyz.jpenilla.run-paper") version "2.0.1" // Adds runServer and runMojangMappedServer tasks for testing
 }
 
 java {
@@ -19,9 +20,7 @@ dependencies {
     paperDevBundle("1.19.3-R0.1-SNAPSHOT")
 }
 
-group = "ADHDMC"
-version = "dev"
-description = "SimpleBucketMobs"
+version = "a"
 
 tasks {
     assemble {
@@ -37,5 +36,10 @@ tasks {
     }
     processResources {
         filteringCharset = Charsets.UTF_8.name()
+        filesMatching("plugin.yml") {
+            expand(
+                "version" to project.version
+            )
+        }
     }
 }

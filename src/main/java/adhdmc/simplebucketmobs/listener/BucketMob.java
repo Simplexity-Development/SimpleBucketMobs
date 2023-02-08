@@ -1,8 +1,12 @@
 package adhdmc.simplebucketmobs.listener;
 
 import adhdmc.simplebucketmobs.SimpleBucketMobs;
+import com.google.common.base.Charsets;
+import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtIo;
+import net.minecraft.nbt.TagParser;
 import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.item.BucketItem;
 import org.bukkit.Location;
@@ -24,37 +28,32 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 
-import java.io.IOException;
+import java.io.*;
 
 public class BucketMob implements Listener {
 
-    NamespacedKey mobNBTKey = new NamespacedKey(SimpleBucketMobs.getPlugin(), "mob_nbt");
-    NamespacedKey mobTypeKey = new NamespacedKey(SimpleBucketMobs.getPlugin(), "mob_type");
+    public static final NamespacedKey mobNBTKey = new NamespacedKey(SimpleBucketMobs.getPlugin(), "mob_nbt");
+    public static final NamespacedKey mobTypeKey = new NamespacedKey(SimpleBucketMobs.getPlugin(), "mob_type");
 
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
     public void bucketMob(PlayerInteractEntityEvent event) {
         if (event.getHand() != EquipmentSlot.HAND) return;
-        if (!(event.getRightClicked() instanceof LivingEntity)) return;
+        if (!(event.getRightClicked() instanceof LivingEntity entity)) return;
         ItemStack bucket = event.getPlayer().getEquipment().getItemInMainHand();
         if (bucket.getType() != Material.BUCKET) return;
         if (bucket.getItemMeta().getPersistentDataContainer().has(mobTypeKey)) return;
         ItemStack mobBucket = new ItemStack(Material.BUCKET);
-        byte[] serializedMob;
-        try {
-            serializedMob = event.getRightClicked().getPersistentDataContainer().serializeToBytes();
-        } catch (IOException e) {
-            event.getPlayer().sendRichMessage("<red>Failed to bucket mob (Serialization).");
-            return;
-        }
+        String serializedNbt;
+        serializedNbt = serializeNBT(entity);
         ItemMeta meta = mobBucket.getItemMeta();
         PersistentDataContainer bucketPDC = meta.getPersistentDataContainer();
-        bucketPDC.set(mobNBTKey, PersistentDataType.BYTE_ARRAY, serializedMob);
-        bucketPDC.set(mobTypeKey, PersistentDataType.STRING, event.getRightClicked().getType().toString());
+        bucketPDC.set(mobNBTKey, PersistentDataType.STRING, serializedNbt);
+        bucketPDC.set(mobTypeKey, PersistentDataType.STRING, entity.getType().toString());
         meta.displayName(MiniMessage.miniMessage().deserialize("<aqua>Mob Bucket"));
         mobBucket.setItemMeta(meta);
         bucket.subtract();
         event.getPlayer().getInventory().addItem(mobBucket);
-        event.getRightClicked().remove();
+        entity.remove();
     }
 
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
@@ -66,31 +65,51 @@ public class BucketMob implements Listener {
         if (bucket.getType() != Material.BUCKET) return;
         if (!bucket.getItemMeta().getPersistentDataContainer().has(mobNBTKey)) return;
         String mobTypeString = bucket.getItemMeta().getPersistentDataContainer().get(mobTypeKey, PersistentDataType.STRING);
-        byte[] serializedMob = bucket.getItemMeta().getPersistentDataContainer().get(mobNBTKey, PersistentDataType.BYTE_ARRAY);
+        String serializedNbt = bucket.getItemMeta().getPersistentDataContainer().get(mobNBTKey, PersistentDataType.STRING);
         EntityType mobType;
         try { mobType = EntityType.valueOf(mobTypeString); }
         catch (IllegalArgumentException e) {
-            event.getPlayer().sendRichMessage("<red>Failed to unbucket mob (IllegalArgumentException).");
+            event.getPlayer().sendRichMessage("<red>Failed to unbucket mob (Not a mob).");
+            e.printStackTrace();
             return;
         }
-        Entity entity = interactLoc.getWorld().spawnEntity(interactLoc, mobType, CreatureSpawnEvent.SpawnReason.CUSTOM);
-        try { entity.getPersistentDataContainer().readFromBytes(serializedMob); }
-        catch (IOException e) {
+        LivingEntity entity = (LivingEntity) interactLoc.getWorld().spawnEntity(interactLoc, mobType, CreatureSpawnEvent.SpawnReason.CUSTOM);
+        try { if (serializedNbt != null) applyNBT(entity, serializedNbt); }
+        catch (IOException | CommandSyntaxException e) {
             event.getPlayer().sendRichMessage("<red>Failed to unbucket mob (Deserialization).");
+            e.printStackTrace();
             return;
         }
         bucket.subtract();
         event.getPlayer().getInventory().addItem(new ItemStack(Material.BUCKET));
     }
 
-    // TODO: This is literally here just for me to type shit and see what happens.
-    //  THIS IS NOT GONNA BE USED IN THE CODE
-    public void entitySerialization(LivingEntity e, ItemStack bucket) {
+    /**
+     * Serializes the NBT Data from the LivingEntity.
+     * @param e LivingEntity
+     * @return String serialization of the LivingEntity.
+     */
+    private String serializeNBT(LivingEntity e) {
         CompoundTag tag = new CompoundTag();
         ((CraftLivingEntity) e).getHandle().save(tag);
-        tag.toString();
-        CompoundTag tag2 = new CompoundTag();
+        return tag.getAsString();
+    }
 
+    /**
+     * Deserializes the NBT Data into the LivingEntity.
+     * @param e LivingEntity
+     * @exception IOException Failed to read NBT Tags.
+     * @exception CommandSyntaxException What.
+     */
+    private void applyNBT(LivingEntity e, String serializedNbt) throws IOException, CommandSyntaxException {
+        CompoundTag tag = TagParser.parseTag(serializedNbt);
+        CompoundTag newLoc = new CompoundTag();
+        ((CraftLivingEntity) e).getHandle().save(newLoc);
+        tag.put("Motion", newLoc.get("Motion"));
+        tag.put("Pos", newLoc.get("Pos"));
+        tag.put("Rotation", newLoc.get("Rotation"));
+        tag.put("UUID", newLoc.get("UUID"));
+        ((CraftLivingEntity) e).getHandle().load(tag);
     }
 
 }
