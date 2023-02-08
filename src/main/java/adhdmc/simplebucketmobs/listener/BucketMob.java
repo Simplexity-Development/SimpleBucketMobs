@@ -2,9 +2,13 @@ package adhdmc.simplebucketmobs.listener;
 
 import adhdmc.simplebucketmobs.SimpleBucketMobs;
 import net.kyori.adventure.text.minimessage.MiniMessage;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.entity.HumanoidArm;
+import net.minecraft.world.item.BucketItem;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
+import org.bukkit.craftbukkit.v1_19_R2.entity.CraftLivingEntity;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
@@ -77,6 +81,16 @@ public class BucketMob implements Listener {
         }
         bucket.subtract();
         event.getPlayer().getInventory().addItem(new ItemStack(Material.BUCKET));
+    }
+
+    // TODO: This is literally here just for me to type shit and see what happens.
+    //  THIS IS NOT GONNA BE USED IN THE CODE
+    public void entitySerialization(LivingEntity e, ItemStack bucket) {
+        CompoundTag tag = new CompoundTag();
+        ((CraftLivingEntity) e).getHandle().save(tag);
+        tag.toString();
+        CompoundTag tag2 = new CompoundTag();
+
     }
 
 }

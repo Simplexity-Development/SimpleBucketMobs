@@ -1,4 +1,5 @@
 name: SimpleBucketMobs
+group: ADHDMC
 version: '${project.version}'
 main: adhdmc.simplebucketmobs.SimpleBucketMobs
 api-version: 1.19
