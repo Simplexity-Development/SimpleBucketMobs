@@ -1,6 +1,8 @@
 package adhdmc.simplebucketmobs.listener;
 
 import adhdmc.simplebucketmobs.SimpleBucketMobs;
+import adhdmc.simplebucketmobs.config.Config;
+import adhdmc.simplebucketmobs.util.Message;
 import com.google.common.base.Charsets;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import net.kyori.adventure.text.minimessage.MiniMessage;
@@ -9,6 +11,7 @@ import net.minecraft.nbt.NbtIo;
 import net.minecraft.nbt.TagParser;
 import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.item.BucketItem;
+import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
@@ -39,16 +42,23 @@ public class BucketMob implements Listener {
     public void bucketMob(PlayerInteractEntityEvent event) {
         if (event.getHand() != EquipmentSlot.HAND) return;
         if (!(event.getRightClicked() instanceof LivingEntity entity)) return;
+        if (!Config.getInstance().getAllowedTypes().contains(entity.getType())) return;
+        // TODO: Permission Check.
+        // TODO: Check disallowed attributes.
         ItemStack bucket = event.getPlayer().getEquipment().getItemInMainHand();
         if (bucket.getType() != Material.BUCKET) return;
         if (bucket.getItemMeta().getPersistentDataContainer().has(mobTypeKey)) return;
+
         ItemStack mobBucket = new ItemStack(Material.BUCKET);
         String serializedNbt;
         serializedNbt = serializeNBT(entity);
+
         ItemMeta meta = mobBucket.getItemMeta();
         PersistentDataContainer bucketPDC = meta.getPersistentDataContainer();
         bucketPDC.set(mobNBTKey, PersistentDataType.STRING, serializedNbt);
         bucketPDC.set(mobTypeKey, PersistentDataType.STRING, entity.getType().toString());
+
+        // TODO: Make Configurable
         meta.displayName(MiniMessage.miniMessage().deserialize("<aqua>Mob Bucket"));
         mobBucket.setItemMeta(meta);
         bucket.subtract();
@@ -64,24 +74,30 @@ public class BucketMob implements Listener {
         ItemStack bucket = event.getPlayer().getEquipment().getItemInMainHand();
         if (bucket.getType() != Material.BUCKET) return;
         if (!bucket.getItemMeta().getPersistentDataContainer().has(mobNBTKey)) return;
+
         String mobTypeString = bucket.getItemMeta().getPersistentDataContainer().get(mobTypeKey, PersistentDataType.STRING);
         String serializedNbt = bucket.getItemMeta().getPersistentDataContainer().get(mobNBTKey, PersistentDataType.STRING);
+
         EntityType mobType;
         try { mobType = EntityType.valueOf(mobTypeString); }
         catch (IllegalArgumentException e) {
-            event.getPlayer().sendRichMessage("<red>Failed to unbucket mob (Not a mob).");
+            event.getPlayer().sendMessage(Message.ERROR_NO_BUCKET_MOB.getParsedMessage());
             e.printStackTrace();
             return;
         }
+
         LivingEntity entity = (LivingEntity) interactLoc.getWorld().spawnEntity(interactLoc, mobType, CreatureSpawnEvent.SpawnReason.CUSTOM);
         try { if (serializedNbt != null) applyNBT(entity, serializedNbt); }
         catch (IOException | CommandSyntaxException e) {
-            event.getPlayer().sendRichMessage("<red>Failed to unbucket mob (Deserialization).");
+            event.getPlayer().sendMessage(Message.ERROR_FAILED_DESERIALIZATION.getParsedMessage());
             e.printStackTrace();
             return;
         }
-        bucket.subtract();
-        event.getPlayer().getInventory().addItem(new ItemStack(Material.BUCKET));
+
+        if (event.getPlayer().getGameMode() != GameMode.CREATIVE) {
+            bucket.subtract();
+            event.getPlayer().getInventory().addItem(new ItemStack(Material.BUCKET));
+        }
     }
 
     /**
