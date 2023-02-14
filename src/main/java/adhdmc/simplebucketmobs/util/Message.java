@@ -31,7 +31,7 @@ public enum Message {
     public Component getParsedMessage() {
         return SimpleBucketMobs.getMiniMessage().deserialize(
                 message,
-                Placeholder.unparsed("prefix", Message.PREFIX.getMessage())
+                Placeholder.parsed("prefix", Message.PREFIX.message)
         );
     }
 
