@@ -10,6 +10,7 @@ public enum Message {
 
     LOGGER_INVALID_LOCALE_KEY("Invalid Key in locale.yml: "),
     LOGGER_INVALID_MOB_TYPE("Invalid Mob Type in config.yml: "),
+
     ERROR_NOT_A_PLAYER("<prefix><red>This command can only be executed by a player.</red>"),
     ERROR_NO_BUCKET_MOB("<prefix><red>This is not a bucket mob, please report this to a server admin.</red>"),
     ERROR_FAILED_DESERIALIZATION("<prefix><red>Failed to deserialize mob, please report this to a server admin.</red>"),

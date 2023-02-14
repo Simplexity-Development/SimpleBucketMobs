@@ -2,7 +2,6 @@ package adhdmc.simplebucketmobs.config;
 
 import adhdmc.simplebucketmobs.SimpleBucketMobs;
 import adhdmc.simplebucketmobs.util.Message;
-import com.mojang.serialization.Decoder;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.EntityType;
 
@@ -16,6 +15,7 @@ public class Config {
     private static Config instance;
 
     private final Set<EntityType> allowedTypes;
+    // TODO: Allowed Types dependent on Bucket
     // TODO: Disallowed Attributes
 
     private Config() {

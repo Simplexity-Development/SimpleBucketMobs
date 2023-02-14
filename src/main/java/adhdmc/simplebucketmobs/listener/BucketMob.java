@@ -2,16 +2,13 @@ package adhdmc.simplebucketmobs.listener;
 
 import adhdmc.simplebucketmobs.SimpleBucketMobs;
 import adhdmc.simplebucketmobs.config.Config;
+import adhdmc.simplebucketmobs.config.Texture;
 import adhdmc.simplebucketmobs.util.Message;
-import com.google.common.base.Charsets;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.NbtIo;
 import net.minecraft.nbt.Tag;
 import net.minecraft.nbt.TagParser;
-import net.minecraft.world.entity.HumanoidArm;
-import net.minecraft.world.item.BucketItem;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -32,12 +29,13 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 
-import java.io.*;
+import java.io.IOException;
 
 public class BucketMob implements Listener {
 
     public static final NamespacedKey mobNBTKey = new NamespacedKey(SimpleBucketMobs.getPlugin(), "mob_nbt");
 
+    // TODO: Handle normal bucket use cases such as Cow Milking
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
     public void bucketMob(PlayerInteractEntityEvent event) {
         if (event.getHand() != EquipmentSlot.HAND) return;
@@ -48,7 +46,10 @@ public class BucketMob implements Listener {
         // TODO: Check disallowed attributes.
         ItemStack bucket = event.getPlayer().getEquipment().getItemInMainHand();
         if (bucket.getType() != Material.BUCKET) return;
-        if (bucket.getItemMeta().getPersistentDataContainer().has(mobNBTKey)) return;
+        if (bucket.getItemMeta().getPersistentDataContainer().has(mobNBTKey)) {
+            event.setCancelled(true);
+            return;
+        }
 
         ItemStack mobBucket = new ItemStack(Material.BUCKET);
         String serializedNbt = serializeNBT(entity);
@@ -59,6 +60,7 @@ public class BucketMob implements Listener {
 
         // TODO: Make Configurable
         meta.displayName(MiniMessage.miniMessage().deserialize("<aqua>Mob Bucket"));
+        Texture.getInstance().setCustomData(entity.getType(), meta);
         mobBucket.setItemMeta(meta);
         bucket.subtract();
         event.getPlayer().getInventory().addItem(mobBucket);

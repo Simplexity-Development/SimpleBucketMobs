@@ -5,6 +5,7 @@ import adhdmc.simplebucketmobs.command.subcommand.Debucket;
 import adhdmc.simplebucketmobs.command.subcommand.Reload;
 import adhdmc.simplebucketmobs.config.Config;
 import adhdmc.simplebucketmobs.config.Locale;
+import adhdmc.simplebucketmobs.config.Texture;
 import adhdmc.simplebucketmobs.listener.BucketMob;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.serializer.gson.GsonComponentSerializer;
@@ -41,6 +42,7 @@ public final class SimpleBucketMobs extends JavaPlugin {
         plugin.saveDefaultConfig();
         Config.getInstance().reloadConfig();
         Locale.getInstance().reloadLocale();
+        Texture.getInstance().reloadTextureConfig();
     }
     private void registerCommands() {
         this.getCommand("simplebucketmobs").setExecutor(new CommandHandler());
