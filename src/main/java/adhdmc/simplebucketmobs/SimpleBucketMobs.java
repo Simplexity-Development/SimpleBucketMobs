@@ -1,14 +1,16 @@
 package adhdmc.simplebucketmobs;
 
-import adhdmc.simplebucketmobs.command.DebucketCommand;
+import adhdmc.simplebucketmobs.command.CommandHandler;
+import adhdmc.simplebucketmobs.command.subcommand.Debucket;
+import adhdmc.simplebucketmobs.command.subcommand.Reload;
+import adhdmc.simplebucketmobs.config.Config;
+import adhdmc.simplebucketmobs.config.Locale;
 import adhdmc.simplebucketmobs.listener.BucketMob;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.serializer.gson.GsonComponentSerializer;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
-
-import java.util.logging.Logger;
 
 public final class SimpleBucketMobs extends JavaPlugin {
 
@@ -22,7 +24,8 @@ public final class SimpleBucketMobs extends JavaPlugin {
         miniMessage = MiniMessage.miniMessage();
         gsonComponentSerializer = GsonComponentSerializer.gson();
         Bukkit.getPluginManager().registerEvents(new BucketMob(), this);
-        this.getCommand("debucket").setExecutor(new DebucketCommand());
+        registerCommands();
+        reloadPluginConfigs();
     }
 
     @Override
@@ -33,4 +36,16 @@ public final class SimpleBucketMobs extends JavaPlugin {
     public static Plugin getPlugin() { return plugin; }
     public static MiniMessage getMiniMessage() { return miniMessage; }
     public static GsonComponentSerializer getGsonSerializer() { return gsonComponentSerializer; }
+
+    public static void reloadPluginConfigs() {
+        plugin.saveDefaultConfig();
+        Config.getInstance().reloadConfig();
+        Locale.getInstance().reloadLocale();
+    }
+    private void registerCommands() {
+        this.getCommand("simplebucketmobs").setExecutor(new CommandHandler());
+        CommandHandler.subcommandList.clear();
+        CommandHandler.subcommandList.put("reload", new Reload());
+        CommandHandler.subcommandList.put("debucket", new Debucket());
+    }
 }

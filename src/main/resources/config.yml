@@ -1,0 +1,8 @@
+# The allowed types of entities that the bucket can be used on.
+# List of Entity Types here: https://purpurmc.org/javadoc/org/bukkit/entity/EntityType.html
+# Only LivingEntity types can be used (unless it's an Armor Stand / Player, it will not work).
+#   Fun fact: Armor Stand is a "Living Entity".
+allowed-types:
+  - SHEEP
+  - COW
+  - PIG

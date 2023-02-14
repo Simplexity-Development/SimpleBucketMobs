@@ -6,5 +6,6 @@ api-version: 1.19
 authors: [ Rhythmic, Peashooter101 ]
 description: Shove your mobs into buckets like Axolotls! :D
 commands:
-  debucket:
-    description: "Get information on the bucket in your hands..."
+  simplebucketmobs:
+    description: "SimpleBucketMobs Base Command."
+    aliases: ["sbm", "simplebucketmob"]
