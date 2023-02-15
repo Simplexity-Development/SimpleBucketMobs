@@ -1,1 +1,19 @@
-SHEEP: 1
+###
+# texture.yml
+# ---
+# Designate the Custom Model Data here.
+# ---
+# MOB:
+#   default: {custom model data}
+#   {nbtKey}:
+#     ...
+#     {nbtValue}: {custom model data}
+###
+SHEEP:
+  default: 1
+  Color:
+    0b: 1
+VILLAGER:
+  VillagerData:
+    profession:
+      "minecraft:none": 1

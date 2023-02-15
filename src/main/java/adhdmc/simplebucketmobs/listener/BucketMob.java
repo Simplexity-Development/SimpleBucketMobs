@@ -52,7 +52,8 @@ public class BucketMob implements Listener {
         }
 
         ItemStack mobBucket = new ItemStack(Material.BUCKET);
-        String serializedNbt = serializeNBT(entity);
+        CompoundTag tag = serializeNBT(entity);
+        String serializedNbt = tag.getAsString();
 
         ItemMeta meta = mobBucket.getItemMeta();
         PersistentDataContainer bucketPDC = meta.getPersistentDataContainer();
@@ -60,7 +61,7 @@ public class BucketMob implements Listener {
 
         // TODO: Make Configurable
         meta.displayName(MiniMessage.miniMessage().deserialize("<aqua>Mob Bucket"));
-        Texture.getInstance().setCustomData(entity.getType(), meta);
+        Texture.getInstance().setCustomData(entity.getType(), meta, tag);
         mobBucket.setItemMeta(meta);
         bucket.subtract();
         event.getPlayer().getInventory().addItem(mobBucket);
@@ -101,10 +102,10 @@ public class BucketMob implements Listener {
      * @param e LivingEntity
      * @return String serialization of the LivingEntity.
      */
-    private String serializeNBT(LivingEntity e) {
+    private CompoundTag serializeNBT(LivingEntity e) {
         CompoundTag tag = new CompoundTag();
         ((CraftLivingEntity) e).getHandle().save(tag);
-        return tag.getAsString();
+        return tag;
     }
 
     /**
