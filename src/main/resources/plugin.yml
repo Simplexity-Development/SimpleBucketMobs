@@ -9,3 +9,15 @@ commands:
   simplebucketmobs:
     description: "SimpleBucketMobs Base Command."
     aliases: ["sbm", "simplebucketmob"]
+permissions:
+  simplebucketmobs.bucket.<mob>:
+    description: "Allows the user to bucket the specified mob."
+    default: false
+  simplebucketmobs.bucket.all:
+    description: "Allows the user to bucket all enabled mobs."
+    default: op
+  simplebucketmobs.reload:
+    description: "Reload plugin configuration files."
+    default: op
+  simplebucketmobs.debucket:
+    description: "Dump saved mob NBT data from Mob Bucket to chat."

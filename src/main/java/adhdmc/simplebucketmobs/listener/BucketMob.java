@@ -4,19 +4,19 @@ import adhdmc.simplebucketmobs.SimpleBucketMobs;
 import adhdmc.simplebucketmobs.config.Config;
 import adhdmc.simplebucketmobs.config.Texture;
 import adhdmc.simplebucketmobs.util.Message;
+import adhdmc.simplebucketmobs.util.Permission;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import net.kyori.adventure.text.minimessage.MiniMessage;
+import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.nbt.TagParser;
-import org.bukkit.GameMode;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.NamespacedKey;
+import org.bukkit.*;
 import org.bukkit.craftbukkit.v1_19_R2.entity.CraftLivingEntity;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -35,16 +35,22 @@ public class BucketMob implements Listener {
 
     public static final NamespacedKey mobNBTKey = new NamespacedKey(SimpleBucketMobs.getPlugin(), "mob_nbt");
 
-    // TODO: Handle normal bucket use cases such as Cow Milking
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
     public void bucketMob(PlayerInteractEntityEvent event) {
         if (event.getHand() != EquipmentSlot.HAND) return;
+        Player player = event.getPlayer();
+        if (!player.isSneaking()) return;
         if (!(event.getRightClicked() instanceof LivingEntity entity)) return;
-        // TODO: Don't forget to uncomment this: if (entity.getType() == EntityType.PLAYER) return;
+        if (entity.getType() == EntityType.PLAYER) return;
         if (!Config.getInstance().getAllowedTypes().contains(entity.getType())) return;
-        // TODO: Permission Check.
+        if (!(player.hasPermission(Permission.BUCKET_ALL.get()) || player.hasPermission(Permission.BUCKET_MOB.get() + entity.getType()))) {
+            player.sendMessage(Message.ERROR_BUCKET_NO_PERMISSION.getParsedMessage());
+            return;
+        }
+        // TODO: Health Threshold Requirement / Health Check Bypass Permission (Per Mob)
         // TODO: Check disallowed attributes.
-        ItemStack bucket = event.getPlayer().getEquipment().getItemInMainHand();
+        ItemStack bucket = player.getEquipment().getItemInMainHand();
+        // TODO: Allow for different bucket types.
         if (bucket.getType() != Material.BUCKET) return;
         if (bucket.getItemMeta().getPersistentDataContainer().has(mobNBTKey)) {
             event.setCancelled(true);
@@ -59,12 +65,19 @@ public class BucketMob implements Listener {
         PersistentDataContainer bucketPDC = meta.getPersistentDataContainer();
         bucketPDC.set(mobNBTKey, PersistentDataType.STRING, serializedNbt);
 
-        // TODO: Make Configurable
-        meta.displayName(MiniMessage.miniMessage().deserialize("<aqua>Mob Bucket"));
+        meta.displayName(SimpleBucketMobs.getMiniMessage().deserialize(
+                "<!i>" + Config.getInstance().getBucketTitle(),
+                Placeholder.unparsed("type", entity.getType().toString())
+        ));
         Texture.getInstance().setCustomData(entity.getType(), meta, tag);
         mobBucket.setItemMeta(meta);
-        bucket.subtract();
-        event.getPlayer().getInventory().addItem(mobBucket);
+        if (player.getGameMode() != GameMode.CREATIVE) bucket.subtract();
+        player.getInventory().addItem(mobBucket);
+        try {
+            // TODO: Configurable?
+            String soundName = "ENTITY_" + entity.getType() + "_HURT";
+            player.playSound(player.getLocation(), Sound.valueOf(soundName), 0.75f, 1.0f);
+        } catch (IllegalArgumentException ignored) { }
         entity.remove();
     }
 
@@ -73,7 +86,8 @@ public class BucketMob implements Listener {
         if (event.getHand() != EquipmentSlot.HAND) return;
         Location interactLoc = event.getInteractionPoint();
         if (interactLoc == null) return;
-        ItemStack bucket = event.getPlayer().getEquipment().getItemInMainHand();
+        Player player = event.getPlayer();
+        ItemStack bucket = player.getEquipment().getItemInMainHand();
         if (bucket.getType() != Material.BUCKET) return;
         if (!bucket.getItemMeta().getPersistentDataContainer().has(mobNBTKey)) return;
 
@@ -81,19 +95,22 @@ public class BucketMob implements Listener {
 
         try { if (serializedNbt != null) applyNBT(interactLoc, serializedNbt); }
         catch (IOException | CommandSyntaxException e) {
-            event.getPlayer().sendMessage(Message.ERROR_FAILED_DESERIALIZATION.getParsedMessage());
+            player.sendMessage(Message.ERROR_FAILED_DESERIALIZATION.getParsedMessage());
             e.printStackTrace();
             return;
         }
         catch (IllegalArgumentException e) {
-            event.getPlayer().sendMessage(Message.ERROR_NO_BUCKET_MOB.getParsedMessage());
+            player.sendMessage(Message.ERROR_NO_BUCKET_MOB.getParsedMessage());
             e.printStackTrace();
             return;
         }
 
-        if (event.getPlayer().getGameMode() != GameMode.CREATIVE) {
+        // TODO: Make configurable.
+        player.playSound(player.getLocation(), Sound.ITEM_BUCKET_FILL_POWDER_SNOW, 1.0f, 1.0f);
+
+        if (player.getGameMode() != GameMode.CREATIVE) {
             bucket.subtract();
-            event.getPlayer().getInventory().addItem(new ItemStack(Material.BUCKET));
+            player.getInventory().addItem(new ItemStack(Material.BUCKET));
         }
     }
 

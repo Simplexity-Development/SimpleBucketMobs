@@ -1,6 +1,7 @@
 package adhdmc.simplebucketmobs.command;
 
 import adhdmc.simplebucketmobs.util.Message;
+import adhdmc.simplebucketmobs.util.Permission;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
@@ -30,7 +31,18 @@ public class CommandHandler implements TabExecutor {
     }
 
     @Override
-    public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
-        return emptyList;
+    public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {        if (args.length == 0) return new ArrayList<>();
+        if (args.length == 1) {
+            List<String> list = new ArrayList<>();
+            for (SubCommand cmd : subcommandList.values()) {
+                if (sender.hasPermission(cmd.getPermission()) && cmd.getName().contains(args[0])) list.add(cmd.getName());
+            }
+            return list;
+        }
+        String subcommand = args[0].toLowerCase();
+        if (subcommandList.containsKey(subcommand) && sender.hasPermission(subcommandList.get(subcommand).getPermission())) {
+            return subcommandList.get(subcommand).getSubcommandArguments(sender, args);
+        }
+        return new ArrayList<>();
     }
 }

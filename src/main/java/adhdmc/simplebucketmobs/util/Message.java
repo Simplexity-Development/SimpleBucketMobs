@@ -16,6 +16,9 @@ public enum Message {
     ERROR_FAILED_DESERIALIZATION("<prefix><red>Failed to deserialize mob, please report this to a server admin.</red>"),
 
     ERROR_COMMAND_NOT_FOUND("<prefix><red>Command not found."),
+    ERROR_COMMAND_NO_PERMISSION("<prefix><red>You do not have permission to run that command."),
+
+    ERROR_BUCKET_NO_PERMISSION("<prefix><red>You do not have permission to bucket this mob."),
 
     COMMAND_RELOAD("<prefix><green>The configuration has been successfully reloaded.");
 

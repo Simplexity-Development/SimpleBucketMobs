@@ -8,5 +8,6 @@ ERROR_NO_BUCKET_MOB: "<prefix><red>This is not a bucket mob, please report this 
 ERROR_FAILED_DESERIALIZATION: "<prefix><red>Failed to deserialize mob, please report this to a server admin.</red>"
 
 ERROR_COMMAND_NOT_FOUND: "<prefix><red>Command not found."
+ERROR_COMMAND_NO_PERMISSION: "<prefix><red>You do not have permission to run that command."
 
 COMMAND_RELOAD: "<prefix><green>The configuration has been successfully reloaded."

@@ -59,6 +59,7 @@ public class Texture {
                 break;
             }
             // If the tag is not a CompoundTag, this is the value we need.
+            // TODO: Make it so if a value "exists" it is true, not just that the value is set to a specific one.
             if (!tag.contains(ymlKey, 10)) {
                 Tag currentTag = tag.get(ymlKey);
                 assert currentTag != null; // Guaranteed, we checked.

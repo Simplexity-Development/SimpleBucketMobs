@@ -147,11 +147,7 @@ WITHER_SKELETON:
   default: 22060
 WOLF:
   default: 22061
-  # Workaround for Tamed Wolf.
-  # NBT Sitting only exists if tamed by a player.
-  Sitting:
-    0b: 22049
-    1b: 22049
+  # Cannot currently determine Tamed Wolf (22049).
 ZOMBIE:
   default: 22062
 ZOMBIE_VILLAGER:

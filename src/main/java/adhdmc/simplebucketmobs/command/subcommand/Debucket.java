@@ -3,6 +3,7 @@ package adhdmc.simplebucketmobs.command.subcommand;
 import adhdmc.simplebucketmobs.command.SubCommand;
 import adhdmc.simplebucketmobs.listener.BucketMob;
 import adhdmc.simplebucketmobs.util.Message;
+import adhdmc.simplebucketmobs.util.Permission;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.EquipmentSlot;
@@ -14,13 +15,17 @@ import java.util.List;
 
 public class Debucket extends SubCommand {
     public Debucket() {
-        super("debucket", "Allows you to dump the JSON NBT data to the player chat.", "/sbm debucket");
+        super("debucket", "Allows you to dump the JSON NBT data to the player chat.", "/sbm debucket", Permission.COMMAND_DEBUCKET);
     }
 
     @Override
     public void execute(CommandSender sender, String[] args) {
         if (!(sender instanceof Player player)) {
             sender.sendMessage(Message.ERROR_NOT_A_PLAYER.getParsedMessage());
+            return;
+        }
+        if (!sender.hasPermission(Permission.COMMAND_DEBUCKET.get())) {
+            sender.sendMessage(Message.ERROR_COMMAND_NO_PERMISSION.getParsedMessage());
             return;
         }
         ItemStack item = player.getInventory().getItem(EquipmentSlot.HAND);

@@ -15,6 +15,7 @@ public class Config {
     private static Config instance;
 
     private final Set<EntityType> allowedTypes;
+    private String bucketTitle;
     // TODO: Allowed Types dependent on Bucket
     // TODO: Disallowed Attributes
 
@@ -28,6 +29,7 @@ public class Config {
     }
 
     public Set<EntityType> getAllowedTypes() { return Collections.unmodifiableSet(allowedTypes); }
+    public String getBucketTitle() { return bucketTitle; }
 
     public void reloadConfig() {
         SimpleBucketMobs.getPlugin().reloadConfig();
@@ -43,6 +45,7 @@ public class Config {
                 SimpleBucketMobs.getPlugin().getLogger().warning(Message.LOGGER_INVALID_MOB_TYPE.getMessage() + type);
             }
         }
+        bucketTitle = config.getString("bucket-title", "<aqua><type> Bucket");
     }
 
 }
