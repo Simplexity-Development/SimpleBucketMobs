@@ -2,6 +2,7 @@
 # texture.yml
 # ---
 # Designate the Custom Model Data here.
+# See the README on https://github.com/ADHDMC/SimpleBucketMobs for details.
 # ---
 # MOB:
 #   default: {custom model data}
@@ -9,11 +10,156 @@
 #     ...
 #     {nbtValue}: {custom model data}
 ###
+ALLAY:
+  default: 22001
+BAT:
+  default: 22002
+BEE:
+  default: 22003
+CAT:
+  default: 22004
+  variant:
+    "minecraft:all_black": 22004
+BLAZE:
+  default: 22005
+CAVE_SPIDER:
+  default: 22006
+CHICKEN:
+  default: 22007
+COW:
+  default: 22009
+CREEPER:
+  default: 22010
+DOLPHIN:
+  default: 22011
+DROWNED:
+  default: 22012
+ELDER_GUARDIAN:
+  default: 22013
+ENDER_DRAGON:
+  default: 22014
+ENDERMAN:
+  default: 22015
+ENDERMITE:
+  default: 22016
+EVOKER:
+  default: 22017
+FOX:
+  default: 22018
+FROG:
+  default: 22008
+  variant:
+    "minecraft:cold": 22008
+GHAST:
+  default: 22019
+GLOW_SQUID:
+  default: 22020
+GUARDIAN:
+  default: 22021
+HOGLIN:
+  default: 22022
+HUSK:
+  default: 22023
+ILLUSIONER:
+  default: 22024
+IRON_GOLEM:
+  default: 22025
+LLAMA:
+  default: 22026
+MAGMA_CUBE:
+  default: 22027
+MUSHROOM_COW:
+  default: 22028
+  Type:
+    red: 22028
+OCELOT:
+  default: 22029
+PANDA:
+  default: 22030
+PARROT:
+  default: 22040
+  Variant:
+    0: 22040
+PHANTOM:
+  default: 22031
+PIG:
+  default: 22032
+PIGLIN_BRUTE:
+  default: 22033
+PIGLIN:
+  default: 22034
+PILLAGER:
+  default: 22035
+POLAR_BEAR:
+  default: 22036
+RABBIT:
+  default: 22038
+  RabbitType:
+    0: 22038
+RAVAGER:
+  default: 22039
 SHEEP:
-  default: 1
+  default: 22057
   Color:
-    0b: 1
+    0b: 22057
+SHULKER:
+  default: 22041
+  Color:
+    16b: 22041
+SILVERFISH:
+  default: 22042
+SKELETON:
+  default: 22043
+SLIME:
+  default: 22044
+SNOWMAN:
+  default: 22037
+SPIDER:
+  default: 22045
+SQUID:
+  default: 22046
+STRAY:
+  default: 22047
+STRIDER:
+  default: 22048
+TRADER_LLAMA:
+  default: 22050
+TURTLE:
+  defualt: 22051
+VEX:
+  default: 22052
 VILLAGER:
+  default: 22053
   VillagerData:
     profession:
-      "minecraft:none": 1
+      "minecraft:none": 22053
+VINDICATOR:
+  default: 22054
+WANDERING_TRADER:
+  default: 22055
+WARDEN:
+  default: 22056
+WITCH:
+  default: 22058
+WITHER:
+  default: 22059
+WITHER_SKELETON:
+  default: 22060
+WOLF:
+  default: 22061
+  # Workaround for Tamed Wolf.
+  # NBT Sitting only exists if tamed by a player.
+  Sitting:
+    0b: 22049
+    1b: 22049
+ZOMBIE:
+  default: 22062
+ZOMBIE_VILLAGER:
+  default: 22063
+  VillagerData:
+    profession:
+      "minecraft:none": 22063
+ZOGLIN:
+  default: 22064
+ZOMBIFIED_PIGLIN:
+  default: 22065

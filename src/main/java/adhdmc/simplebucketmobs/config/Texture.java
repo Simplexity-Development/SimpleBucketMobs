@@ -73,6 +73,6 @@ public class Texture {
         }
         if (value == null) return;
         assert section != null; // Guaranteed, ymlKey was pulled out of the keySet and the set was unmodified.
-        meta.setCustomModelData(section.getInt(value, 0));
+        meta.setCustomModelData(section.getInt(value, meta.getCustomModelData()));
     }
 }
