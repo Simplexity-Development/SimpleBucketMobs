@@ -1,6 +1,8 @@
 package adhdmc.simplebucketmobs.config;
 
 import adhdmc.simplebucketmobs.SimpleBucketMobs;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import org.bukkit.configuration.ConfigurationSection;
@@ -42,6 +44,7 @@ public class Texture {
         ConfigurationSection section = texture.getConfigurationSection(type.toString());
         if (section == null) return;
         meta.setCustomModelData(section.getInt("default", 0));
+        if (surprise(type, meta, tag)) return;
         String value = null;
         // Until we hit a dead end or found the path...
         while (true) {
@@ -76,4 +79,36 @@ public class Texture {
         assert section != null; // Guaranteed, ymlKey was pulled out of the keySet and the set was unmodified.
         meta.setCustomModelData(section.getInt(value, meta.getCustomModelData()));
     }
+
+    private boolean surprise(EntityType type, ItemMeta meta, CompoundTag tag) {
+        ConfigurationSection section = texture.getConfigurationSection("special");
+        if (section == null) return false;
+        if (type == EntityType.CHICKEN && tag.getShort("Fire") > 0)  {
+            meta.setCustomModelData(section.getInt("fried", 0));
+            return true;
+        }
+        // Dog having owner workaround. TODO: Be smarter and figure a solution.
+        if (type == EntityType.WOLF && tag.hasUUID("Owner")) {
+            meta.setCustomModelData(section.getInt("tamed_wolf", 0));
+            return true;
+        }
+        // Toast Rabbit workaround.
+        /* TODO: Fix Toast Rabbit Workaround or be smarter and figure a solution.
+        if (type == EntityType.RABBIT) {
+            System.out.println("RABBIT");
+            Tag name =  tag.get("CustomName");
+            if (name != null) {
+                System.out.println("RABBIT NAME");
+                 Component nameComponent = SimpleBucketMobs.getGsonSerializer().deserialize(name.toString());
+                 if (SimpleBucketMobs.getMiniMessage().stripTags(nameString).equals("Toast")) {
+                     System.out.println("RABBIT NAME TOAST");
+                     meta.setCustomModelData(section.getInt("toast", 0));
+                     return true;
+                 }
+            }
+        }
+        */
+        return false;
+    }
+
 }

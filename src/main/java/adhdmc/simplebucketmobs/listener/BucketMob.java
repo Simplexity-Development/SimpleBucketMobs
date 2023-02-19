@@ -6,6 +6,7 @@ import adhdmc.simplebucketmobs.config.Texture;
 import adhdmc.simplebucketmobs.util.Message;
 import adhdmc.simplebucketmobs.util.Permission;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
+import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import net.minecraft.nbt.CompoundTag;
@@ -65,9 +66,15 @@ public class BucketMob implements Listener {
         PersistentDataContainer bucketPDC = meta.getPersistentDataContainer();
         bucketPDC.set(mobNBTKey, PersistentDataType.STRING, serializedNbt);
 
+        String entityType = entity.getType().toString();
+        String entityTypeName = nameCase(entityType);
+        Component customName = entity.customName();
+        Component entityTypeComponent = SimpleBucketMobs.getPlainTextSerializer().deserialize(entityTypeName);
         meta.displayName(SimpleBucketMobs.getMiniMessage().deserialize(
                 "<!i>" + Config.getInstance().getBucketTitle(),
-                Placeholder.unparsed("type", entity.getType().toString())
+                Placeholder.parsed("type", entityType),
+                Placeholder.parsed("type_name_cased", entityTypeName),
+                Placeholder.component("display_name", customName != null ? customName : entityTypeComponent)
         ));
         Texture.getInstance().setCustomData(entity.getType(), meta, tag);
         mobBucket.setItemMeta(meta);
@@ -148,6 +155,30 @@ public class BucketMob implements Listener {
         tag.put("Rotation", newLoc.get("Rotation"));
         tag.put("UUID", newLoc.get("UUID"));
         ((CraftLivingEntity) entity).getHandle().load(tag);
+    }
+
+    /**
+     * Converts a string to Name Case
+     * @param input String
+     * @return String but using Name Case
+     * @implNote Thanks Baeldung (https://www.baeldung.com/java-string-title-case)
+     */
+    private String nameCase(String input) {
+        if (input == null || input.isBlank()) return input;
+        StringBuilder nameCased = new StringBuilder();
+        boolean toUpper = true;
+        for (char c : input.toCharArray()) {
+            if (Character.isSpaceChar(c)) toUpper = true;
+            else if (toUpper) {
+                c = Character.toTitleCase(c);
+                toUpper = false;
+            }
+            else {
+                c = Character.toLowerCase(c);
+            }
+            nameCased.append(c);
+        }
+        return nameCased.toString();
     }
 
 }

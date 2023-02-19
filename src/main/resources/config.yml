@@ -1,4 +1,7 @@
-bucket-title: "<aqua><type> Bucket"
+# <type>: Returns the literal type of the entity (ie: SHEEP)
+# <type_name_cased>: Returns the literal type of the entity but not screaming (ie: Sheep)
+# <display_name>: Returns the display name or the type_name_cased if it is not named (ie: _jeb)
+bucket-title: "<aqua><display_name> in a Bucket"
 
 # The allowed types of entities that the bucket can be used on.
 # List of Entity Types here: https://purpurmc.org/javadoc/org/bukkit/entity/EntityType.html
