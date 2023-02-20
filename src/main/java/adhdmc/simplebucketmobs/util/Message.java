@@ -19,6 +19,7 @@ public enum Message {
     ERROR_COMMAND_NO_PERMISSION("<prefix><red>You do not have permission to run that command."),
 
     ERROR_BUCKET_NO_PERMISSION("<prefix><red>You do not have permission to bucket this mob."),
+    ERROR_BUCKET_HOSTILE_TARGETING("<prefix><red>That monster is targeting you! Get it off your trail!"),
 
     COMMAND_RELOAD("<prefix><green>The configuration has been successfully reloaded.");
 

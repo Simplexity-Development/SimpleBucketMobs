@@ -16,6 +16,7 @@ public class Config {
 
     private final Set<EntityType> allowedTypes;
     private String bucketTitle;
+    private boolean noHostileTargeting;
     // TODO: Allowed Types dependent on Bucket
     // TODO: Disallowed Attributes
 
@@ -30,6 +31,7 @@ public class Config {
 
     public Set<EntityType> getAllowedTypes() { return Collections.unmodifiableSet(allowedTypes); }
     public String getBucketTitle() { return bucketTitle; }
+    public boolean isNoHostileTargeting() { return noHostileTargeting; }
 
     public void reloadConfig() {
         SimpleBucketMobs.getPlugin().reloadConfig();
@@ -46,6 +48,7 @@ public class Config {
             }
         }
         bucketTitle = config.getString("bucket-title", "<aqua><type> Bucket");
+        noHostileTargeting = config.getBoolean("no-hostile-targeting", true);
     }
 
 }

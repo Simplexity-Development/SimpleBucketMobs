@@ -3,6 +3,9 @@
 # <display_name>: Returns the display name or the type_name_cased if it is not named (ie: _jeb)
 bucket-title: "<aqua><display_name> in a Bucket"
 
+# Hostile mobs cannot be bucketed if they are targeting you.
+no-hostile-targeting: true
+
 # The allowed types of entities that the bucket can be used on.
 # List of Entity Types here: https://purpurmc.org/javadoc/org/bukkit/entity/EntityType.html
 # Only LivingEntity types can be used (unless it's an Armor Stand / Player, it will not work).

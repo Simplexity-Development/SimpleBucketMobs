@@ -14,10 +14,7 @@ import net.minecraft.nbt.Tag;
 import net.minecraft.nbt.TagParser;
 import org.bukkit.*;
 import org.bukkit.craftbukkit.v1_19_R2.entity.CraftLivingEntity;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.EntityType;
-import org.bukkit.entity.LivingEntity;
-import org.bukkit.entity.Player;
+import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -43,6 +40,13 @@ public class BucketMob implements Listener {
         if (!player.isSneaking()) return;
         if (!(event.getRightClicked() instanceof LivingEntity entity)) return;
         if (entity.getType() == EntityType.PLAYER) return;
+        if (Config.getInstance().isNoHostileTargeting()
+                && entity instanceof Monster monster
+                && monster.getTarget() != null
+                && monster.getTarget().equals(player)) {
+            player.sendMessage(Message.ERROR_BUCKET_HOSTILE_TARGETING.getParsedMessage());
+            return;
+        }
         if (!Config.getInstance().getAllowedTypes().contains(entity.getType())) return;
         if (!(player.hasPermission(Permission.BUCKET_ALL.get()) || player.hasPermission(Permission.BUCKET_MOB.get() + entity.getType()))) {
             player.sendMessage(Message.ERROR_BUCKET_NO_PERMISSION.getParsedMessage());
