@@ -11,251 +11,263 @@
 #     {nbtValue}: {custom model data}
 ###
 ALLAY:
-  default: 22001
-BAT:
-  default: 22002
-BEE:
-  default: 22003
-BLAZE:
-  default: 22005
-CAT:
-  default: 22138
-  variant:
-    "minecraft:tabby": 22147
-    "minecraft:black": 22138
-    "minecraft:red": 22148
-    "minecraft:siamese": 22141
-    "minecraft:british_shorthair": 22139
-    "minecraft:calico": 22145
-    "minecraft:persian": 22143
-    "minecraft:ragdoll": 22142
-    "minecraft:white": 22146
-    "minecraft:jellie": 22144
-    "minecraft:all_black": 22140
-CAVE_SPIDER:
-  default: 22006
-CHICKEN:
-  default: 22136
-COW:
-  default: 22009
-CREEPER:
-  default: 22010
-DOLPHIN:
-  default: 22011
-DROWNED:
-  default: 22012
-ELDER_GUARDIAN:
-  default: 22013
-ENDER_DRAGON:
-  default: 22014
-ENDERMAN:
-  default: 22015
-ENDERMITE:
-  default: 22016
-EVOKER:
-  default: 22017
-FOX:
-  default: 22134
-  Type:
-    red: 22134
-    snow: 22135
-FROG:
-  default: 22123
-  variant:
-    "minecraft:cold": 22123
-    "minecraft:temperate": 22124
-    "minecraft:warm": 22125
-GHAST:
-  default: 22019
-GLOW_SQUID:
-  default: 22020
-GUARDIAN:
-  default: 22021
-HOGLIN:
-  default: 22022
-HUSK:
-  default: 22023
-ILLUSIONER:
-  default: 22024
-IRON_GOLEM:
-  default: 22025
-LLAMA:
-  default: 22026
-  Variant:
-    0: 22131    # Creamy
-    1: 22132    # White
-    2: 22130    # Brown
-    3: 22133    # Gray
-MAGMA_CUBE:
-  default: 22027
-MUSHROOM_COW:
-  default: 22028
-  Type:
-    red: 22121
-    brown: 22122
-OCELOT:
-  default: 22029
-PANDA:
-  default: 22030
-PARROT:
-  default: 22165
-  Variant:
-    0: 22165    # Red Blue
-    1: 22166    # Blue
-    2: 22168    # Green
-    3: 22167    # Yellow Blue
-    4: 22169    # Gray
-PHANTOM:
-  default: 22031
-PIG:
   default: 22032
-PIGLIN_BRUTE:
+BAT:
+  default: 22088
+BEE:
+  default: 22081
+BLAZE:
+  default: 22022
+CAT:
+  default: 22094
+  variant:
+    "minecraft:tabby": 22102
+    "minecraft:black": 22094
+    "minecraft:red": 22100
+    "minecraft:siamese": 22101
+    "minecraft:british_shorthair": 22095
+    "minecraft:calico": 22096
+    "minecraft:persian": 22098
+    "minecraft:ragdoll": 22099
+    "minecraft:white": 22103
+    "minecraft:jellie": 22097
+    "minecraft:all_black": 22093
+CAVE_SPIDER:
+  default: 22044
+CHICKEN:
+  default: 22082
+COW:
+  default: 22052
+CREEPER:
+  default: 22040
+DOLPHIN:
+  default: 22156
+DONKEY:
+  default: 22104
+DROWNED:
+  default: 22048
+ELDER_GUARDIAN:
+  default: 22157
+ENDER_DRAGON:
+  default: 22019
+ENDERMAN:
+  default: 22000
+ENDERMITE:
+  default: 22001
+EVOKER:
   default: 22033
-PIGLIN:
+FOX:
+  default: 22086
+  Type:
+    red: 22086
+    snow: 22087
+FROG:
+  default: 22054
+  variant:
+    "minecraft:cold": 22054
+    "minecraft:temperate": 22055
+    "minecraft:warm": 22056
+GHAST:
+  default: 22023
+GLOW_SQUID:
+  default: 22158
+GOAT:
+  default: 22084
+GUARDIAN:
+  default: 22159
+HOGLIN:
+  default: 22024
+HORSE:
+  default: 22105
+HUSK:
+  default: 22049
+ILLUSIONER:
   default: 22034
+IRON_GOLEM:
+  default: 22154
+LLAMA:
+  default: 22109
+  Variant:
+    0: 22111    # Creamy
+    1: 22115    # White
+    2: 22109    # Brown
+    3: 22113    # Gray
+MAGMA_CUBE:
+  default: 22025
+MULE:
+  default: 22106
+MUSHROOM_COW:
+  default: 22053
+  Type:
+    red: 22053
+    brown: 22051
+OCELOT:
+  default: 22089
+PANDA:
+  default: 22090
+PARROT:
+  default: 22120
+  Variant:
+    0: 22120    # Red Blue
+    1: 22117    # Blue
+    2: 22118    # Green
+    3: 22121    # Yellow Blue
+    4: 22119    # Gray
+PHANTOM:
+  default: 22041
+PIG:
+  default: 22085
+PIGLIN_BRUTE:
+  default: 22026
+PIGLIN:
+  default: 22027
 PILLAGER:
   default: 22035
 POLAR_BEAR:
-  default: 22036
+  default: 22091
 RABBIT:
-  default: 22038
+  default: 22058
   RabbitType:
-    0: 22071    # Brown
-    1: 22069    # White
-    2: 22072    # Black
-    3: 22067    # White Splotched
-    4: 22073    # Gold
-    5: 22066    # Salt and Pepper
-    99: 22068   # Evil / Killer
+    0: 22058    # Brown
+    1: 22063    # White
+    2: 22057    # Black
+    3: 22064    # White Splotched
+    4: 22059    # Gold
+    5: 22061    # Salt and Pepper
+    99: 22060   # Evil / Killer
 RAVAGER:
-  default: 22039
+  default: 22036
 SHEEP:
-  default: 22149
+  default: 22080
   Color:
-    0b: 22149   # White
-    1b: 22158   # Orange
-    2b: 22155   # Magenta
-    3b: 22164   # Light Blue
-    4b: 22159   # Yellow
-    5b: 22160   # Lime
-    6b: 22157   # Pink
-    7b: 22151   # Gray
-    8b: 22150   # Light Gray
-    9b: 22162   # Cyan
-    10b: 22154  # Purple
-    11b: 22163  # Blue
-    12b: 22153  # Brown
-    13b: 22161  # Green
-    14b: 22156  # Red
-    15b: 22152  # Black
+    0b: 22080   # White
+    1b: 22066   # Orange
+    2b: 22074   # Magenta
+    3b: 22071   # Light Blue
+    4b: 22067   # Yellow
+    5b: 22068   # Lime
+    6b: 22075   # Pink
+    7b: 22078   # Gray
+    8b: 22079   # Light Gray
+    9b: 22070   # Cyan
+    10b: 22073  # Purple
+    11b: 22072  # Blue
+    12b: 22076  # Brown
+    13b: 22069  # Green
+    14b: 22065  # Red
+    15b: 22077  # Black
 SHULKER:
-  default: 22074
+  default: 22016
   Color:
-    0b: 22075   # White
-    1b: 22089   # Orange
-    2b: 22081   # Magenta
-    3b: 22084   # Light Blue
-    4b: 22088   # Yellow
-    5b: 22087   # Lime
-    6b: 22080   # Pink
-    7b: 22077   # Gray
-    8b: 22076   # Light Gray
-    9b: 22085   # Cyan
-    10b: 22082  # Purple
-    11b: 22083  # Blue
-    12b: 22079  # Brown
-    13b: 22086  # Green
-    14b: 22090  # Red
-    15b: 22078  # Black
-    16b: 22074  # Default
+    0b: 22017   # White
+    1b: 22012   # Orange
+    2b: 22011   # Magenta
+    3b: 22008   # Light Blue
+    4b: 22018   # Yellow
+    5b: 22010   # Lime
+    6b: 22013   # Pink
+    7b: 22007   # Gray
+    8b: 22009   # Light Gray
+    9b: 22005   # Cyan
+    10b: 22014  # Purple
+    11b: 22003  # Blue
+    12b: 22004  # Brown
+    13b: 22006  # Green
+    14b: 22015  # Red
+    15b: 22002  # Black
+    16b: 22016  # Default
 SILVERFISH:
   default: 22042
 SKELETON:
-  default: 22043
+  default: 22046
+SKELETON_HORSE:
+  default: 22107
 SLIME:
-  default: 22044
+  default: 22043
 SNOWMAN:
-  default: 22037
+  default: 22092
 SPIDER:
   default: 22045
 SQUID:
-  default: 22046
+  default: 22160
 STRAY:
   default: 22047
 STRIDER:
-  default: 22048
+  default: 22028
 TRADER_LLAMA:
-  default: 22050
+  default: 22110
   Variant:
-    0: 22128    # Creamy
-    1: 22127    # White
-    2: 22129    # Brown
-    3: 22126    # Gray
+    0: 22112    # Creamy
+    1: 22116    # White
+    2: 22110    # Brown
+    3: 22114    # Gray
 TURTLE:
-  defualt: 22051
+  defualt: 22161
 VEX:
-  default: 22052
+  default: 22037
 VILLAGER:
-  default: 22120
+  default: 22135
   VillagerData:
     profession:
-      "minecraft:armorer": 22118
-      "minecraft:butcher": 22117
-      "minecraft:cartographer": 22116
-      "minecraft:cleric": 22115
-      "minecraft:farmer": 22114
-      "minecraft:fisherman": 22113
-      "minecraft:fletcher": 22112
-      "minecraft:leatherworker": 22108
-      "minecraft:librarian": 22111
-      "minecraft:nitwit": 22119
-      "minecraft:none": 22120
-      "minecraft:mason": 22106
-      "minecraft:shepherd": 22110
-      "minecraft:toolsmith": 22107
-      "minecraft:weaponsmith": 22109
+      "minecraft:armorer": 22124
+      "minecraft:butcher": 22125
+      "minecraft:cartographer": 22126
+      "minecraft:cleric": 22127
+      "minecraft:farmer": 22128
+      "minecraft:fisherman": 22129
+      "minecraft:fletcher": 22130
+      "minecraft:leatherworker": 22131
+      "minecraft:librarian": 22132
+      "minecraft:nitwit": 22134
+      "minecraft:none": 22135
+      "minecraft:mason": 22133
+      "minecraft:shepherd": 22136
+      "minecraft:toolsmith": 22137
+      "minecraft:weaponsmith": 22138
 VINDICATOR:
-  default: 22054
+  default: 22038
 WANDERING_TRADER:
-  default: 22055
+  default: 22155
 WARDEN:
-  default: 22056
+  default: 22020
 WITCH:
-  default: 22058
+  default: 22039
 WITHER:
-  default: 22059
+  default: 22021
 WITHER_SKELETON:
-  default: 22060
+  default: 22029
 WOLF:
-  default: 22061
+  default: 22123
   # Tamed Wolf is temporarily in "special" (22049).
 ZOMBIE:
-  default: 22062
+  default: 22050
 ZOMBIE_VILLAGER:
   default: 22105
   VillagerData:
     profession:
-      "minecraft:armorer": 22103
-      "minecraft:butcher": 22102
-      "minecraft:cartographer": 22101
-      "minecraft:cleric": 22100
-      "minecraft:farmer": 22099
-      "minecraft:fisherman": 22098
-      "minecraft:fletcher": 22097
-      "minecraft:leatherworker": 22091
-      "minecraft:librarian": 22096
-      "minecraft:nitwit": 22104
-      "minecraft:none": 22105
-      "minecraft:mason": 22092
-      "minecraft:shepherd": 22095
-      "minecraft:toolsmith": 22093
-      "minecraft:weaponsmith": 22094
+      "minecraft:armorer": 22139
+      "minecraft:butcher": 22140
+      "minecraft:cartographer": 22141
+      "minecraft:cleric": 22142
+      "minecraft:farmer": 22143
+      "minecraft:fisherman": 22144
+      "minecraft:fletcher": 22145
+      "minecraft:leatherworker": 22146
+      "minecraft:librarian": 22147
+      "minecraft:nitwit": 22149
+      "minecraft:none": 22153
+      "minecraft:mason": 22148
+      "minecraft:shepherd": 22150
+      "minecraft:toolsmith": 22151
+      "minecraft:weaponsmith": 22152
+ZOMBIE_HORSE:
+  default: 22108
 ZOGLIN:
-  default: 22064
+  default: 22030
 ZOMBIFIED_PIGLIN:
-  default: 22065
+  default: 22031
 
 special:
-  fried: 22137
-  tamed_wolf: 22049
-  toast: 22070    # Currently does not work.
+  fried: 22083
+  tamed_wolf: 22122
+  toast: 22062    # Currently does not work.
