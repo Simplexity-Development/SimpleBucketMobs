@@ -12,12 +12,14 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.nbt.TagParser;
 import org.bukkit.*;
+import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.craftbukkit.v1_19_R2.entity.CraftLivingEntity;
 import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.player.PlayerBucketFillEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
@@ -40,7 +42,9 @@ public class BucketMob implements Listener {
         if (event.getHand() != EquipmentSlot.HAND) return;
         Player player = event.getPlayer();
         if (!player.isSneaking()) return;
-        if (!(event.getRightClicked() instanceof LivingEntity entity)) return;
+        Entity clicked = event.getRightClicked();
+        if (clicked instanceof ComplexEntityPart part) clicked = part.getParent();
+        if (!(clicked instanceof LivingEntity entity)) return;
         if (entity.getType() == EntityType.PLAYER) return;
         if (Config.getInstance().isNoHostileTargeting()
                 && entity instanceof Monster monster
@@ -99,8 +103,10 @@ public class BucketMob implements Listener {
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
     public void unbucketMob(PlayerInteractEvent event) {
         if (event.getHand() != EquipmentSlot.HAND) return;
-        Location interactLoc = event.getInteractionPoint();
-        if (interactLoc == null) return;
+        if (event.getAction() != Action.RIGHT_CLICK_BLOCK) return;
+        Block block = event.getClickedBlock();
+        if (block == null) return;
+        Location location = block.getRelative(event.getBlockFace()).getLocation().add(0.5, 0.0, 0.5);
 
         Player player = event.getPlayer();
         ItemStack bucket = player.getEquipment().getItemInMainHand();
@@ -109,7 +115,7 @@ public class BucketMob implements Listener {
 
         String serializedNbt = bucket.getItemMeta().getPersistentDataContainer().get(mobNBTKey, PersistentDataType.STRING);
 
-        try { if (serializedNbt != null) applyNBT(interactLoc, serializedNbt, event.getBlockFace()); }
+        try { if (serializedNbt != null) applyNBT(location, serializedNbt, event.getBlockFace()); }
         catch (IOException | CommandSyntaxException e) {
             player.sendMessage(Message.ERROR_FAILED_DESERIALIZATION.getParsedMessage());
             e.printStackTrace();
@@ -169,15 +175,16 @@ public class BucketMob implements Listener {
         // Special cases where minecraft:id != Bukkit Name.
         if (id.equals("MOOSHROOM")) mobType = EntityType.MUSHROOM_COW;
         else mobType = EntityType.valueOf(id);
-        Entity entity = location.getWorld().spawnEntity(location, mobType, CreatureSpawnEvent.SpawnReason.CUSTOM);
-        entity.teleport(adjustLoc(location, face, entity.getBoundingBox()));
-        CompoundTag newLoc = new CompoundTag();
-        ((CraftLivingEntity) entity).getHandle().save(newLoc);
-        tag.put("Motion", newLoc.get("Motion"));
-        tag.put("Pos", newLoc.get("Pos"));
-        tag.put("Rotation", newLoc.get("Rotation"));
-        tag.put("UUID", newLoc.get("UUID"));
-        ((CraftLivingEntity) entity).getHandle().load(tag);
+        Entity entity = location.getWorld().spawnEntity(location, mobType, CreatureSpawnEvent.SpawnReason.CUSTOM, spawned -> {
+            CompoundTag newLoc = new CompoundTag();
+            ((CraftLivingEntity) spawned).getHandle().save(newLoc);
+            tag.put("Motion", newLoc.get("Motion"));
+            tag.put("Pos", newLoc.get("Pos"));
+            tag.put("Rotation", newLoc.get("Rotation"));
+            tag.put("UUID", newLoc.get("UUID"));
+            ((CraftLivingEntity) spawned).getHandle().load(tag);
+        });
+        // TODO: Adjust Entity on Bounding Box -- entity.teleport(adjustLoc(location, face, entity.getBoundingBox()));
     }
 
     /**
