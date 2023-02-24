@@ -19,6 +19,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.CreatureSpawnEvent;
+import org.bukkit.event.player.PlayerBucketFillEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.EquipmentSlot;
@@ -123,6 +124,16 @@ public class BucketMob implements Listener {
             bucket.subtract();
             player.getInventory().addItem(new ItemStack(Material.BUCKET));
         }
+    }
+
+    @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
+    public void noBucketLiquid(PlayerBucketFillEvent event) {
+        Player player = event.getPlayer();
+        ItemStack bucket = player.getEquipment().getItem(event.getHand());
+        if (bucket.getItemMeta().getPersistentDataContainer().has(mobNBTKey)) {
+            event.setCancelled(true);
+        }
+        // TODO: Make it so that when performing bucketMob and unbucketMob, the bucket does not collect liquid.
     }
 
     /**
