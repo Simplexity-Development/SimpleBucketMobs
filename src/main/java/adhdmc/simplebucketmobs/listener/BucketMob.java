@@ -165,7 +165,10 @@ public class BucketMob implements Listener {
         // TODO: Maybe throw exception.
         if (idTag == null) return;
         String id = idTag.getAsString().split(":")[1].toUpperCase();
-        EntityType mobType = EntityType.valueOf(id);
+        EntityType mobType;
+        // Special cases where minecraft:id != Bukkit Name.
+        if (id.equals("MOOSHROOM")) mobType = EntityType.MUSHROOM_COW;
+        else mobType = EntityType.valueOf(id);
         Entity entity = location.getWorld().spawnEntity(location, mobType, CreatureSpawnEvent.SpawnReason.CUSTOM);
         entity.teleport(adjustLoc(location, face, entity.getBoundingBox()));
         CompoundTag newLoc = new CompoundTag();
@@ -185,6 +188,7 @@ public class BucketMob implements Listener {
      */
     private String nameCase(String input) {
         if (input == null || input.isBlank()) return input;
+        input = input.replace('_', ' ');
         StringBuilder nameCased = new StringBuilder();
         boolean toUpper = true;
         for (char c : input.toCharArray()) {
