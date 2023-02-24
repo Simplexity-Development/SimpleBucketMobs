@@ -7,12 +7,12 @@ import adhdmc.simplebucketmobs.util.Message;
 import adhdmc.simplebucketmobs.util.Permission;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.nbt.TagParser;
 import org.bukkit.*;
+import org.bukkit.block.BlockFace;
 import org.bukkit.craftbukkit.v1_19_R2.entity.CraftLivingEntity;
 import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
@@ -27,6 +27,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
+import org.bukkit.util.BoundingBox;
 
 import java.io.IOException;
 
@@ -98,6 +99,7 @@ public class BucketMob implements Listener {
         if (event.getHand() != EquipmentSlot.HAND) return;
         Location interactLoc = event.getInteractionPoint();
         if (interactLoc == null) return;
+
         Player player = event.getPlayer();
         ItemStack bucket = player.getEquipment().getItemInMainHand();
         if (bucket.getType() != Material.BUCKET) return;
@@ -105,7 +107,7 @@ public class BucketMob implements Listener {
 
         String serializedNbt = bucket.getItemMeta().getPersistentDataContainer().get(mobNBTKey, PersistentDataType.STRING);
 
-        try { if (serializedNbt != null) applyNBT(interactLoc, serializedNbt); }
+        try { if (serializedNbt != null) applyNBT(interactLoc, serializedNbt, event.getBlockFace()); }
         catch (IOException | CommandSyntaxException e) {
             player.sendMessage(Message.ERROR_FAILED_DESERIALIZATION.getParsedMessage());
             e.printStackTrace();
@@ -155,7 +157,7 @@ public class BucketMob implements Listener {
      * @exception IOException Failed to read NBT Tags.
      * @exception CommandSyntaxException What.
      */
-    private void applyNBT(Location location, String serializedNbt) throws IllegalArgumentException, IOException, CommandSyntaxException {
+    private void applyNBT(Location location, String serializedNbt, BlockFace face) throws IllegalArgumentException, IOException, CommandSyntaxException {
         CompoundTag tag = TagParser.parseTag(serializedNbt);
         Tag idTag = tag.get("id");
         // TODO: Maybe throw exception.
@@ -163,6 +165,7 @@ public class BucketMob implements Listener {
         String id = idTag.getAsString().split(":")[1].toUpperCase();
         EntityType mobType = EntityType.valueOf(id);
         Entity entity = location.getWorld().spawnEntity(location, mobType, CreatureSpawnEvent.SpawnReason.CUSTOM);
+        entity.teleport(adjustLoc(location, face, entity.getBoundingBox()));
         CompoundTag newLoc = new CompoundTag();
         ((CraftLivingEntity) entity).getHandle().save(newLoc);
         tag.put("Motion", newLoc.get("Motion"));
@@ -194,6 +197,26 @@ public class BucketMob implements Listener {
             nameCased.append(c);
         }
         return nameCased.toString();
+    }
+
+    /**
+     * Adjusts the location given
+     * @param interactionPoint Location of Interaction Point
+     * @param face Block Face of Interaction
+     * @return The same Location.
+     */
+    private Location adjustLoc(Location interactionPoint, BlockFace face, BoundingBox entityBox) {
+        double height = entityBox.getHeight();
+        double widthX = entityBox.getWidthX();
+        double widthZ = entityBox.getWidthZ();
+        switch (face) {
+            case DOWN -> interactionPoint.add(0, -1*height, 0);
+            case EAST -> interactionPoint.add(.5*widthX, 0, 0);
+            case WEST -> interactionPoint.add(-.5*widthX, 0, 0);
+            case NORTH -> interactionPoint.add(0, 0, -.5*widthZ);
+            case SOUTH -> interactionPoint.add(0, 0, .5*widthZ);
+        }
+        return interactionPoint;
     }
 
 }
