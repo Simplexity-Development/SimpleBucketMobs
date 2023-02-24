@@ -65,6 +65,8 @@ public class BucketMob implements Listener {
         }
 
         ItemStack mobBucket = new ItemStack(Material.BUCKET);
+        Entity vehicle = entity.getVehicle();
+        if (vehicle != null) vehicle.removePassenger(entity);
         CompoundTag tag = serializeNBT(entity);
         String serializedNbt = tag.getAsString();
 
