@@ -40,6 +40,8 @@ COW:
   default: 22052
 CREEPER:
   default: 22040
+  powered:
+    1b: 22040 # TODO: Powered Creeper, Requires new resource from the resource pack.
 DOLPHIN:
   default: 22156
 DONKEY:
