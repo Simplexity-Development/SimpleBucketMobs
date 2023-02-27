@@ -202,7 +202,7 @@ TRADER_LLAMA:
     2: 22110    # Brown
     3: 22114    # Gray
 TURTLE:
-  defualt: 22161
+  default: 22161
 VEX:
   default: 22037
 VILLAGER:
