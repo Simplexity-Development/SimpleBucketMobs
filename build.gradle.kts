@@ -1,4 +1,4 @@
-version = "dev"
+version = "0.1"
 
 plugins {
     `java-library`
