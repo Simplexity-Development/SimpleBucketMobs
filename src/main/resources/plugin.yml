@@ -1,8 +1,8 @@
 name: SimpleBucketMobs
-group: ADHDMC
+group: simplexity
 version: "${version}"
-main: adhdmc.simplebucketmobs.SimpleBucketMobs
-api-version: 1.19
+main: simplexity.simplebucketmobs.SimpleBucketMobs
+api-version: "1.20"
 authors: [ Rhythmic, Peashooter101 ]
 description: Shove your mobs into buckets like Axolotls! :D
 commands:

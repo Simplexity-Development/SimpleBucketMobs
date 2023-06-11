@@ -1,4 +1,4 @@
-package adhdmc.simplebucketmobs.util;
+package simplexity.simplebucketmobs.util;
 
 public enum Permission {
 

@@ -1,12 +1,12 @@
-package adhdmc.simplebucketmobs;
+package simplexity.simplebucketmobs;
 
-import adhdmc.simplebucketmobs.command.CommandHandler;
-import adhdmc.simplebucketmobs.command.subcommand.Debucket;
-import adhdmc.simplebucketmobs.command.subcommand.Reload;
-import adhdmc.simplebucketmobs.config.Config;
-import adhdmc.simplebucketmobs.config.Locale;
-import adhdmc.simplebucketmobs.config.Texture;
-import adhdmc.simplebucketmobs.listener.BucketMob;
+import simplexity.simplebucketmobs.command.CommandHandler;
+import simplexity.simplebucketmobs.command.subcommand.Debucket;
+import simplexity.simplebucketmobs.command.subcommand.Reload;
+import simplexity.simplebucketmobs.config.Config;
+import simplexity.simplebucketmobs.config.Locale;
+import simplexity.simplebucketmobs.config.Texture;
+import simplexity.simplebucketmobs.listener.BucketMob;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.serializer.gson.GsonComponentSerializer;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;

@@ -1,7 +1,6 @@
-package adhdmc.simplebucketmobs.command;
+package simplexity.simplebucketmobs.command;
 
-import adhdmc.simplebucketmobs.util.Message;
-import adhdmc.simplebucketmobs.util.Permission;
+import simplexity.simplebucketmobs.util.Message;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;

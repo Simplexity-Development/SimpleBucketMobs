@@ -1,10 +1,10 @@
-package adhdmc.simplebucketmobs.command.subcommand;
+package simplexity.simplebucketmobs.command.subcommand;
 
-import adhdmc.simplebucketmobs.SimpleBucketMobs;
-import adhdmc.simplebucketmobs.command.CommandHandler;
-import adhdmc.simplebucketmobs.command.SubCommand;
-import adhdmc.simplebucketmobs.util.Message;
-import adhdmc.simplebucketmobs.util.Permission;
+import simplexity.simplebucketmobs.SimpleBucketMobs;
+import simplexity.simplebucketmobs.command.CommandHandler;
+import simplexity.simplebucketmobs.command.SubCommand;
+import simplexity.simplebucketmobs.util.Message;
+import simplexity.simplebucketmobs.util.Permission;
 import org.bukkit.command.CommandSender;
 
 import java.util.List;

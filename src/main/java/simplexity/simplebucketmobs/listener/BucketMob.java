@@ -1,10 +1,10 @@
-package adhdmc.simplebucketmobs.listener;
+package simplexity.simplebucketmobs.listener;
 
-import adhdmc.simplebucketmobs.SimpleBucketMobs;
-import adhdmc.simplebucketmobs.config.Config;
-import adhdmc.simplebucketmobs.config.Texture;
-import adhdmc.simplebucketmobs.util.Message;
-import adhdmc.simplebucketmobs.util.Permission;
+import simplexity.simplebucketmobs.SimpleBucketMobs;
+import simplexity.simplebucketmobs.config.Config;
+import simplexity.simplebucketmobs.config.Texture;
+import simplexity.simplebucketmobs.util.Message;
+import simplexity.simplebucketmobs.util.Permission;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
@@ -14,7 +14,7 @@ import net.minecraft.nbt.TagParser;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
-import org.bukkit.craftbukkit.v1_19_R3.entity.CraftLivingEntity;
+import org.bukkit.craftbukkit.v1_20_R1.entity.CraftLivingEntity;
 import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;

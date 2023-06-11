@@ -1,8 +1,6 @@
-package adhdmc.simplebucketmobs.config;
+package simplexity.simplebucketmobs.config;
 
-import adhdmc.simplebucketmobs.SimpleBucketMobs;
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
+import simplexity.simplebucketmobs.SimpleBucketMobs;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import org.bukkit.configuration.ConfigurationSection;

@@ -1,9 +1,9 @@
-package adhdmc.simplebucketmobs.command.subcommand;
+package simplexity.simplebucketmobs.command.subcommand;
 
-import adhdmc.simplebucketmobs.command.SubCommand;
-import adhdmc.simplebucketmobs.listener.BucketMob;
-import adhdmc.simplebucketmobs.util.Message;
-import adhdmc.simplebucketmobs.util.Permission;
+import simplexity.simplebucketmobs.command.SubCommand;
+import simplexity.simplebucketmobs.listener.BucketMob;
+import simplexity.simplebucketmobs.util.Message;
+import simplexity.simplebucketmobs.util.Permission;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.EquipmentSlot;

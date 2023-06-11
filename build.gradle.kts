@@ -1,4 +1,4 @@
-version = "0.1"
+version = "0.2"
 
 plugins {
     `java-library`
@@ -12,14 +12,10 @@ java {
 
 repositories {
     maven("https://repo.papermc.io/repository/maven-public/")
-    maven("https://oss.sonatype.org/content/groups/public/")
-    maven("https://repo.maven.apache.org/maven2/")
-    maven("https://repo.purpurmc.org/snapshots/")
 }
 
 dependencies {
-    compileOnly("io.papermc.paper:paper-api:1.19.4-R0.1-SNAPSHOT")
-    paperDevBundle("1.19.4-R0.1-SNAPSHOT")
+    paperweight.paperDevBundle("1.20-R0.1-SNAPSHOT")
 }
 
 tasks {

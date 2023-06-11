@@ -1,7 +1,7 @@
-package adhdmc.simplebucketmobs.config;
+package simplexity.simplebucketmobs.config;
 
-import adhdmc.simplebucketmobs.SimpleBucketMobs;
-import adhdmc.simplebucketmobs.util.Message;
+import simplexity.simplebucketmobs.SimpleBucketMobs;
+import simplexity.simplebucketmobs.util.Message;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;

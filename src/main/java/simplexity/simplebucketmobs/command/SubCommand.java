@@ -1,6 +1,6 @@
-package adhdmc.simplebucketmobs.command;
+package simplexity.simplebucketmobs.command;
 
-import adhdmc.simplebucketmobs.util.Permission;
+import simplexity.simplebucketmobs.util.Permission;
 import org.bukkit.command.CommandSender;
 
 import java.util.List;

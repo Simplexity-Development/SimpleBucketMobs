@@ -1,6 +1,6 @@
-package adhdmc.simplebucketmobs.util;
+package simplexity.simplebucketmobs.util;
 
-import adhdmc.simplebucketmobs.SimpleBucketMobs;
+import simplexity.simplebucketmobs.SimpleBucketMobs;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 
