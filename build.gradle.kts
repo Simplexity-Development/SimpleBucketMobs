@@ -1,13 +1,13 @@
-version = "0.2"
+version = "1.0"
 
 plugins {
     `java-library`
-    id("io.papermc.paperweight.userdev") version "1.5.3"
-    id("xyz.jpenilla.run-paper") version "2.0.1" // Adds runServer and runMojangMappedServer tasks for testing
+    id("io.papermc.paperweight.userdev") version "1.7.3"
+    id("xyz.jpenilla.run-paper") version "2.3.1" // Adds runServer and runMojangMappedServer tasks for testing
 }
 
 java {
-    toolchain.languageVersion.set(JavaLanguageVersion.of(17))
+    toolchain.languageVersion.set(JavaLanguageVersion.of(21))
 }
 
 repositories {
@@ -15,27 +15,25 @@ repositories {
 }
 
 dependencies {
-    paperweight.paperDevBundle("1.20-R0.1-SNAPSHOT")
+    paperweight.paperDevBundle("1.21.3-R0.1-SNAPSHOT")
 }
 
 tasks {
     assemble {
-        dependsOn(reobfJar)
+        dependsOn("reobfJar")
     }
 
     compileJava {
-        options.encoding = Charsets.UTF_8.name()
-        options.release.set(17)
+        options.encoding = "UTF-8"
+        options.release.set(21)
     }
     javadoc {
-        options.encoding = Charsets.UTF_8.name()
+        options.encoding = "UTF-8"
     }
     processResources {
-        filteringCharset = Charsets.UTF_8.name()
+        filteringCharset = "UTF-8"
         filesMatching("plugin.yml") {
-            expand(
-                "version" to project.version
-            )
+            expand("version" to project.version)
         }
     }
 }

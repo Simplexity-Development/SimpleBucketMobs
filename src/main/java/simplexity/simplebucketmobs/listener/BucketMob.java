@@ -1,5 +1,6 @@
 package simplexity.simplebucketmobs.listener;
 
+import org.bukkit.craftbukkit.entity.CraftLivingEntity;
 import simplexity.simplebucketmobs.SimpleBucketMobs;
 import simplexity.simplebucketmobs.config.Config;
 import simplexity.simplebucketmobs.config.Texture;
@@ -14,7 +15,7 @@ import net.minecraft.nbt.TagParser;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
-import org.bukkit.craftbukkit.v1_20_R1.entity.CraftLivingEntity;
+
 import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -47,13 +48,13 @@ public class BucketMob implements Listener {
         if (!(clicked instanceof LivingEntity entity)) return;
         if (entity.getType() == EntityType.PLAYER) return;
         if (Config.getInstance().isNoHostileTargeting()
-                && entity instanceof Monster monster
-                && monster.getTarget() != null
-                && monster.getTarget().equals(player)) {
+            && entity instanceof Monster monster
+            && monster.getTarget() != null
+            && monster.getTarget().equals(player)) {
             player.sendMessage(Message.ERROR_BUCKET_HOSTILE_TARGETING.getParsedMessage());
             return;
         }
-        if (!Config.getInstance().getAllowedTypes().contains(entity.getType())) return;
+        if (!Config.getInstance().getAllowedBasicTypes().contains(entity.getType())) return;
         if (!(player.hasPermission(Permission.BUCKET_ALL.get()) || player.hasPermission(Permission.BUCKET_MOB.get() + entity.getType()))) {
             player.sendMessage(Message.ERROR_BUCKET_NO_PERMISSION.getParsedMessage());
             return;
@@ -67,7 +68,6 @@ public class BucketMob implements Listener {
             event.setCancelled(true);
             return;
         }
-
         ItemStack mobBucket = new ItemStack(Material.BUCKET);
         Entity vehicle = entity.getVehicle();
         if (vehicle != null) vehicle.removePassenger(entity);
@@ -91,12 +91,17 @@ public class BucketMob implements Listener {
         Texture.getInstance().setCustomData(entity.getType(), meta, tag);
         mobBucket.setItemMeta(meta);
         if (player.getGameMode() != GameMode.CREATIVE) bucket.subtract();
-        player.getInventory().addItem(mobBucket);
+        if (player.getInventory().firstEmpty() == -1) {
+            player.getWorld().dropItemNaturally(player.getLocation(), mobBucket);
+        } else {
+            player.getInventory().addItem(mobBucket);
+        }
         try {
             // TODO: Configurable?
             String soundName = "ENTITY_" + entity.getType() + "_HURT";
             player.playSound(player.getLocation(), Sound.valueOf(soundName), 0.75f, 1.0f);
-        } catch (IllegalArgumentException ignored) { }
+        } catch (IllegalArgumentException ignored) {
+        }
         entity.remove();
     }
 
@@ -115,13 +120,13 @@ public class BucketMob implements Listener {
 
         String serializedNbt = bucket.getItemMeta().getPersistentDataContainer().get(mobNBTKey, PersistentDataType.STRING);
 
-        try { if (serializedNbt != null) applyNBT(location, serializedNbt, event.getBlockFace()); }
-        catch (IOException | CommandSyntaxException e) {
+        try {
+            if (serializedNbt != null) applyNBT(location, serializedNbt, event.getBlockFace());
+        } catch (IOException | CommandSyntaxException e) {
             player.sendMessage(Message.ERROR_FAILED_DESERIALIZATION.getParsedMessage());
             e.printStackTrace();
             return;
-        }
-        catch (IllegalArgumentException e) {
+        } catch (IllegalArgumentException e) {
             player.sendMessage(Message.ERROR_NO_BUCKET_MOB.getParsedMessage());
             e.printStackTrace();
             return;
@@ -148,6 +153,7 @@ public class BucketMob implements Listener {
 
     /**
      * Serializes the NBT Data from the LivingEntity.
+     *
      * @param e LivingEntity
      * @return String serialization of the LivingEntity.
      */
@@ -159,11 +165,12 @@ public class BucketMob implements Listener {
 
     /**
      * Deserializes the NBT Data into the LivingEntity.
-     * @param location Location to spawn Mob.
+     *
+     * @param location      Location to spawn Mob.
      * @param serializedNbt NBT as a String
-     * @exception IllegalArgumentException Invalid Mob Type Found
-     * @exception IOException Failed to read NBT Tags.
-     * @exception CommandSyntaxException What.
+     * @throws IllegalArgumentException Invalid Mob Type Found
+     * @throws IOException              Failed to read NBT Tags.
+     * @throws CommandSyntaxException   What.
      */
     private void applyNBT(Location location, String serializedNbt, BlockFace face) throws IllegalArgumentException, IOException, CommandSyntaxException {
         CompoundTag tag = TagParser.parseTag(serializedNbt);
@@ -171,10 +178,7 @@ public class BucketMob implements Listener {
         // TODO: Maybe throw exception.
         if (idTag == null) return;
         String id = idTag.getAsString().split(":")[1].toUpperCase();
-        EntityType mobType;
-        // Special cases where minecraft:id != Bukkit Name.
-        if (id.equals("MOOSHROOM")) mobType = EntityType.MUSHROOM_COW;
-        else mobType = EntityType.valueOf(id);
+        EntityType mobType = EntityType.valueOf(id);
         Entity entity = location.getWorld().spawnEntity(location, mobType, CreatureSpawnEvent.SpawnReason.CUSTOM, spawned -> {
             CompoundTag newLoc = new CompoundTag();
             ((CraftLivingEntity) spawned).getHandle().save(newLoc);
@@ -189,6 +193,7 @@ public class BucketMob implements Listener {
 
     /**
      * Converts a string to Name Case
+     *
      * @param input String
      * @return String but using Name Case
      * @implNote Thanks Baeldung (https://www.baeldung.com/java-string-title-case)
@@ -203,8 +208,7 @@ public class BucketMob implements Listener {
             else if (toUpper) {
                 c = Character.toTitleCase(c);
                 toUpper = false;
-            }
-            else {
+            } else {
                 c = Character.toLowerCase(c);
             }
             nameCased.append(c);
@@ -214,8 +218,9 @@ public class BucketMob implements Listener {
 
     /**
      * Adjusts the location given
+     *
      * @param interactionPoint Location of Interaction Point
-     * @param face Block Face of Interaction
+     * @param face             Block Face of Interaction
      * @return The same Location.
      */
     private Location adjustLoc(Location interactionPoint, BlockFace face, BoundingBox entityBox) {
@@ -223,11 +228,11 @@ public class BucketMob implements Listener {
         double widthX = entityBox.getWidthX();
         double widthZ = entityBox.getWidthZ();
         switch (face) {
-            case DOWN -> interactionPoint.add(0, -1*height, 0);
-            case EAST -> interactionPoint.add(.5*widthX, 0, 0);
-            case WEST -> interactionPoint.add(-.5*widthX, 0, 0);
-            case NORTH -> interactionPoint.add(0, 0, -.5*widthZ);
-            case SOUTH -> interactionPoint.add(0, 0, .5*widthZ);
+            case DOWN -> interactionPoint.add(0, -1 * height, 0);
+            case EAST -> interactionPoint.add(.5 * widthX, 0, 0);
+            case WEST -> interactionPoint.add(-.5 * widthX, 0, 0);
+            case NORTH -> interactionPoint.add(0, 0, -.5 * widthZ);
+            case SOUTH -> interactionPoint.add(0, 0, .5 * widthZ);
         }
         return interactionPoint;
     }
