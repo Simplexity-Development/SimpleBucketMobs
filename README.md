@@ -4,11 +4,13 @@
 
 Throw mobs into buckets! :D
 
-> **Warning**
-> 
-> Plugin is still heavily in development and does not currently work.
-> 
-> Compile and use at your own risk, but I would not use this on my server right now to be honest.
+## Permissions
+| Permission                      |  What it do                                      | Default |
+|---------------------------------|--------------------------------------------------|---------|
+| `simplebucketmobs.bucket.<mob>` | Allows the user to bucket the specified mob      | `false` |
+| `simplebucketmobs.bucket.all`   | Allows the user to bucket all enabled mobs       | `op`    |
+| `simplebucketmobs.reload`       | Reload plugin configuration files                | `op`    |
+| `simplebucketmobs.debucket`     | Dump saved mob NBT data from Mob Bucket to chat. | `op`    |
 
 ## Texture Configuration
 
