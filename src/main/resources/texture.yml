@@ -5,271 +5,291 @@
 # See the README on https://github.com/ADHDMC/SimpleBucketMobs for details.
 # ---
 # MOB:
-#   default: {custom model data}
+#   default: "simplexity:bucket_mobs/{custom model data}
 #   {nbtKey}:
 #     ...
 #     {nbtValue}: {custom model data}
 ###
 ALLAY:
-  default: 22032
+  default: "simplexity:bucket_mobs/misc/allay"
+ARMADILLO:
+  default: "simplexity:bucket_mobs/misc/armadillo"
 BAT:
-  default: 22088
+  default: "simplexity:bucket_mobs/misc/bat"
 BEE:
-  default: 22081
+  default: "simplexity:bucket_mobs/misc/bee"
 BLAZE:
-  default: 22022
+  default: "simplexity:bucket_mobs/misc/blaze"
+BREEZE:
+  default: "simplexity:bucket_mobs/misc/breeze"
+CAMEL:
+  default: "simplexity:bucket_mobs/misc/camel"
 CAT:
-  default: 22094
+  default: "simplexity:bucket_mobs/cat/black"
   variant:
-    "minecraft:tabby": 22102
-    "minecraft:black": 22094
-    "minecraft:red": 22100
-    "minecraft:siamese": 22101
-    "minecraft:british_shorthair": 22095
-    "minecraft:calico": 22096
-    "minecraft:persian": 22098
-    "minecraft:ragdoll": 22099
-    "minecraft:white": 22103
-    "minecraft:jellie": 22097
-    "minecraft:all_black": 22093
+    "minecraft:tabby": "simplexity:bucket_mobs/cat/tabby"
+    "minecraft:black": "simplexity:bucket_mobs/cat/black"
+    "minecraft:red": "simplexity:bucket_mobs/cat/red"
+    "minecraft:siamese": "simplexity:bucket_mobs/cat/siamese"
+    "minecraft:british_shorthair": "simplexity:bucket_mobs/cat/british_shorthair"
+    "minecraft:calico": "simplexity:bucket_mobs/cat/calico"
+    "minecraft:persian": "simplexity:bucket_mobs/cat/persian"
+    "minecraft:ragdoll": "simplexity:bucket_mobs/cat/ragdoll"
+    "minecraft:white": "simplexity:bucket_mobs/cat/white"
+    "minecraft:jellie": "simplexity:bucket_mobs/cat/jellie"
+    "minecraft:all_black": "simplexity:bucket_mobs/cat/all_black"
 CAVE_SPIDER:
-  default: 22044
+  default: "simplexity:bucket_mobs/misc/cave_spider"
 CHICKEN:
-  default: 22082
+  default: "simplexity:bucket_mobs/misc/chicken"
 COW:
-  default: 22052
+  default: "simplexity:bucket_mobs/cow/cow"
+CREAKING:
+  default: "simplexity:bucket_mobs/misc/creaking"
 CREEPER:
-  default: 22040
+  default: "simplexity:bucket_mobs/misc/creeper"
   powered:
-    1b: 22040 # TODO: Powered Creeper, Requires new resource from the resource pack.
+    1b: "simplexity:bucket_mobs/misc/charged_creeper"
 DOLPHIN:
-  default: 22156
+  default: "simplexity:bucket_mobs/misc/dolphin"
 DONKEY:
-  default: 22104
+  default: "simplexity:bucket_mobs/horse/donkey_default"
 DROWNED:
-  default: 22048
+  default: "simplexity:bucket_mobs/zombie/drowned"
 ELDER_GUARDIAN:
-  default: 22157
+  default: "simplexity:bucket_mobs/misc/elder_guardian"
 ENDER_DRAGON:
-  default: 22019
+  default: "simplexity:bucket_mobs/misc/ender_dragon"
 ENDERMAN:
-  default: 22000
+  default: "simplexity:bucket_mobs/misc/enderman"
 ENDERMITE:
-  default: 22001
+  default: "simplexity:bucket_mobs/misc/endermite"
 EVOKER:
-  default: 22033
+  default: "simplexity:bucket_mobs/illager/evoker"
 FOX:
-  default: 22086
+  default: "simplexity:bucket_mobs/misc/fox"
   Type:
-    red: 22086
-    snow: 22087
+    red: "simplexity:bucket_mobs/misc/fox"
+    snow: "simplexity:bucket_mobs/misc/snow_fox"
 FROG:
-  default: 22054
+  default: "simplexity:bucket_mobs/frog/cold"
   variant:
-    "minecraft:cold": 22054
-    "minecraft:temperate": 22055
-    "minecraft:warm": 22056
+    "minecraft:cold": "simplexity:bucket_mobs/frog/cold"
+    "minecraft:temperate": "simplexity:bucket_mobs/frog/temperate"
+    "minecraft:warm": "simplexity:bucket_mobs/frog/warm"
 GHAST:
-  default: 22023
+  default: "simplexity:bucket_mobs/misc/ghast"
 GLOW_SQUID:
-  default: 22158
+  default: "simplexity:bucket_mobs/misc/glow_squid"
 GOAT:
-  default: 22084
+  default: "simplexity:bucket_mobs/misc/goat"
 GUARDIAN:
-  default: 22159
+  default: "simplexity:bucket_mobs/misc/guardian"
 HOGLIN:
-  default: 22024
+  default: "simplexity:bucket_mobs/misc/hoglin"
 HORSE:
-  default: 22105
+  default: "simplexity:bucket_mobs/horse/brown_default"
 HUSK:
-  default: 22049
+  default: "simplexity:bucket_mobs/zombie/husk"
 ILLUSIONER:
-  default: 22034
+  default: "simplexity:bucket_mobs/illager/illusioner"
 IRON_GOLEM:
-  default: 22154
+  default: "simplexity:bucket_mobs/misc/iron_golem"
 LLAMA:
-  default: 22109
+  default: "simplexity:bucket_mobs/llama/brown_default"
   Variant:
-    0: 22111    # Creamy
-    1: 22115    # White
-    2: 22109    # Brown
-    3: 22113    # Gray
+    0: "simplexity:bucket_mobs/llama/creamy_default"    # Creamy
+    1: "simplexity:bucket_mobs/llama/white_default"    # White
+    2: "simplexity:bucket_mobs/llama/brown_default"    # Brown
+    3: "simplexity:bucket_mobs/llama/gray_default"    # Gray
 MAGMA_CUBE:
-  default: 22025
+  default: "simplexity:bucket_mobs/misc/magma_cube"
 MULE:
-  default: 22106
+  default: "simplexity:bucket_mobs/horse/mule_default"
 MUSHROOM_COW:
-  default: 22053
+  default: "simplexity:bucket_mobs/cow/mooshroom"
   Type:
-    red: 22053
-    brown: 22051
+    red: "simplexity:bucket_mobs/cow/mooshroom"
+    brown: "simplexity:bucket_mobs/cow/brown_mooshroom"
 OCELOT:
-  default: 22089
+  default: "simplexity:bucket_mobs/cat/ocelot"
 PANDA:
-  default: 22090
+  default: "simplexity:bucket_mobs/panda/panda"
 PARROT:
-  default: 22120
+  default: "simplexity:bucket_mobs/parrot/red_blue"
   Variant:
-    0: 22120    # Red Blue
-    1: 22117    # Blue
-    2: 22118    # Green
-    3: 22121    # Yellow Blue
-    4: 22119    # Gray
+    0: "simplexity:bucket_mobs/parrot/red_blue"    # Red Blue
+    1: "simplexity:bucket_mobs/parrot/blue"   # Blue
+    2: "simplexity:bucket_mobs/parrot/green"    # Green
+    3: "simplexity:bucket_mobs/parrot/yellow_blue"   # Yellow Blue
+    4: "simplexity:bucket_mobs/parrot/gray"    # Gray
 PHANTOM:
-  default: 22041
+  default: "simplexity:bucket_mobs/misc/phantom"
 PIG:
-  default: 22085
+  default: "simplexity:bucket_mobs/misc/pig"
 PIGLIN_BRUTE:
-  default: 22026
+  default: "simplexity:bucket_mobs/piglin/piglin_brute"
 PIGLIN:
-  default: 22027
+  default: "simplexity:bucket_mobs/piglin/piglin"
 PILLAGER:
-  default: 22035
+  default: "simplexity:bucket_mobs/illager/pillager"
 POLAR_BEAR:
-  default: 22091
+  default: "simplexity:bucket_mobs/misc/polar_bear"
 RABBIT:
-  default: 22058
+  default: "simplexity:bucket_mobs/rabbit/brown"
   RabbitType:
-    0: 22058    # Brown
-    1: 22063    # White
-    2: 22057    # Black
-    3: 22064    # White Splotched
-    4: 22059    # Gold
-    5: 22061    # Salt and Pepper
-    99: 22060   # Evil / Killer
+    0: "simplexity:bucket_mobs/rabbit/brown"    # Brown
+    1: "simplexity:bucket_mobs/rabbit/white"    # White
+    2: "simplexity:bucket_mobs/rabbit/black"    # Black
+    3: "simplexity:bucket_mobs/rabbit/white_splotched"    # White Splotched
+    4: "simplexity:bucket_mobs/rabbit/gold"    # Gold
+    5: "simplexity:bucket_mobs/rabbit/toast"    # Salt and Pepper
+    99: "simplexity:bucket_mobs/rabbit/caerbannog"   # Evil / Killer
 RAVAGER:
-  default: 22036
+  default: "simplexity:bucket_mobs/illager/ravager"
 SHEEP:
-  default: 22080
+  default: "simplexity:bucket_mobs/sheep/white"
   Color:
-    0b: 22080   # White
-    1b: 22066   # Orange
-    2b: 22074   # Magenta
-    3b: 22071   # Light Blue
-    4b: 22067   # Yellow
-    5b: 22068   # Lime
-    6b: 22075   # Pink
-    7b: 22078   # Gray
-    8b: 22079   # Light Gray
-    9b: 22070   # Cyan
-    10b: 22073  # Purple
-    11b: 22072  # Blue
-    12b: 22076  # Brown
-    13b: 22069  # Green
-    14b: 22065  # Red
-    15b: 22077  # Black
+    0b: "simplexity:bucket_mobs/sheep/white"      # White
+    1b: "simplexity:bucket_mobs/sheep/orange"     # Orange
+    2b: "simplexity:bucket_mobs/sheep/magenta"    # Magenta
+    3b: "simplexity:bucket_mobs/sheep/light_blue" # Light Blue
+    4b: "simplexity:bucket_mobs/sheep/yellow"     # Yellow
+    5b: "simplexity:bucket_mobs/sheep/lime"       # Lime
+    6b: "simplexity:bucket_mobs/sheep/pink"       # Pink
+    7b: "simplexity:bucket_mobs/sheep/gray"       # Gray
+    8b: "simplexity:bucket_mobs/sheep/light_gray" # Light Gray
+    9b: "simplexity:bucket_mobs/sheep/cyan"       # Cyan
+    10b: "simplexity:bucket_mobs/sheep/purple"    # Purple
+    11b: "simplexity:bucket_mobs/sheep/blue"      # Blue
+    12b: "simplexity:bucket_mobs/sheep/brown"     # Brown
+    13b: "simplexity:bucket_mobs/sheep/green"     # Green
+    14b: "simplexity:bucket_mobs/sheep/red"       # Red
+    15b: "simplexity:bucket_mobs/sheep/black"     # Black
 SHULKER:
-  default: 22016
+  default: "simplexity:bucket_mobs/shulker/default"
   Color:
-    0b: 22017   # White
-    1b: 22012   # Orange
-    2b: 22011   # Magenta
-    3b: 22008   # Light Blue
-    4b: 22018   # Yellow
-    5b: 22010   # Lime
-    6b: 22013   # Pink
-    7b: 22007   # Gray
-    8b: 22009   # Light Gray
-    9b: 22005   # Cyan
-    10b: 22014  # Purple
-    11b: 22003  # Blue
-    12b: 22004  # Brown
-    13b: 22006  # Green
-    14b: 22015  # Red
-    15b: 22002  # Black
-    16b: 22016  # Default
+    0b: "simplexity:bucket_mobs/shulker/white"      # White
+    1b: "simplexity:bucket_mobs/shulker/orange"     # Orange
+    2b: "simplexity:bucket_mobs/shulker/magenta"    # Magenta
+    3b: "simplexity:bucket_mobs/shulker/light_blue" # Light Blue
+    4b: "simplexity:bucket_mobs/shulker/yellow"     # Yellow
+    5b: "simplexity:bucket_mobs/shulker/lime"       # Lime
+    6b: "simplexity:bucket_mobs/shulker/pink"       # Pink
+    7b: "simplexity:bucket_mobs/shulker/gray"       # Gray
+    8b: "simplexity:bucket_mobs/shulker/light_gray" # Light Gray
+    9b: "simplexity:bucket_mobs/shulker/cyan"       # Cyan
+    10b: "simplexity:bucket_mobs/shulker/purple"    # Purple
+    11b: "simplexity:bucket_mobs/shulker/blue"      # Blue
+    12b: "simplexity:bucket_mobs/shulker/brown"     # Brown
+    13b: "simplexity:bucket_mobs/shulker/green"     # Green
+    14b: "simplexity:bucket_mobs/shulker/red"       # Red
+    15b: "simplexity:bucket_mobs/shulker/black"     # Black
+    16b: "simplexity:bucket_mobs/shulker/default"
 SILVERFISH:
-  default: 22042
+  default: "simplexity:bucket_mobs/misc/silver_fish"
 SKELETON:
-  default: 22046
+  default: "simplexity:bucket_mobs/skeleton/skeleton"
 SKELETON_HORSE:
-  default: 22107
+  default: "simplexity:bucket_mobs/horse/skeleton_default"
 SLIME:
-  default: 22043
+  default: "simplexity:bucket_mobs/misc/slime"
+SNIFFER:
+  default: "simplexity:bucket_mobs/misc/sniffer"
 SNOWMAN:
-  default: 22092
+  default: "simplexity:bucket_mobs/misc/pumpkin_golem"
 SPIDER:
-  default: 22045
+  default: "simplexity:bucket_mobs/misc/spider"
 SQUID:
-  default: 22160
+  default: "simplexity:bucket_mobs/misc/squid"
 STRAY:
-  default: 22047
+  default: "simplexity:bucket_mobs/skeleton/stray"
 STRIDER:
-  default: 22028
+  default: "simplexity:bucket_mobs/misc/warm_strider"
 TRADER_LLAMA:
-  default: 22110
+  default: "simplexity:bucket_mobs/llama/brown_trader"
   Variant:
-    0: 22112    # Creamy
-    1: 22116    # White
-    2: 22110    # Brown
-    3: 22114    # Gray
+    0: "simplexity:bucket_mobs/llama/creamy_trader"    # Creamy
+    1: "simplexity:bucket_mobs/llama/white_trader"    # White
+    2: "simplexity:bucket_mobs/llama/brown_trader"    # Brown
+    3: "simplexity:bucket_mobs/llama/gray_trader"    # Gray
 TURTLE:
-  default: 22161
+  default: "simplexity:bucket_mobs/misc/turtle"
 VEX:
-  default: 22037
+  default: "simplexity:bucket_mobs/misc/vex"
 VILLAGER:
-  default: 22135
+  default: "simplexity:bucket_mobs/villager/default_default"
   VillagerData:
     profession:
-      "minecraft:armorer": 22124
-      "minecraft:butcher": 22125
-      "minecraft:cartographer": 22126
-      "minecraft:cleric": 22127
-      "minecraft:farmer": 22128
-      "minecraft:fisherman": 22129
-      "minecraft:fletcher": 22130
-      "minecraft:leatherworker": 22131
-      "minecraft:librarian": 22132
-      "minecraft:nitwit": 22134
-      "minecraft:none": 22135
-      "minecraft:mason": 22133
-      "minecraft:shepherd": 22136
-      "minecraft:toolsmith": 22137
-      "minecraft:weaponsmith": 22138
+      "minecraft:armorer": "simplexity:bucket_mobs/villager/armorer"
+      "minecraft:butcher": "simplexity:bucket_mobs/villager/butcher"
+      "minecraft:cartographer": "simplexity:bucket_mobs/villager/default_default"
+      "minecraft:cleric": "simplexity:bucket_mobs/villager/default_cleric"
+      "minecraft:farmer": "simplexity:bucket_mobs/villager/default_farmer"
+      "minecraft:fisherman": "simplexity:bucket_mobs/villager/default_fisherman"
+      "minecraft:fletcher": "simplexity:bucket_mobs/villager/default_fletcher"
+      "minecraft:leatherworker": "simplexity:bucket_mobs/villager/default_default"
+      "minecraft:librarian": "simplexity:bucket_mobs/villager/default_librarian"
+      "minecraft:nitwit": "simplexity:bucket_mobs/villager/default_default"
+      "minecraft:none": "simplexity:bucket_mobs/villager/default_default"
+      "minecraft:mason": "simplexity:bucket_mobs/villager/default_default"
+      "minecraft:shepherd": "simplexity:bucket_mobs/villager/default_shepherd"
+      "minecraft:toolsmith": "simplexity:bucket_mobs/villager/default_default"
+      "minecraft:weaponsmith": "simplexity:bucket_mobs/villager/default_weaponsmith"
 VINDICATOR:
-  default: 22038
+  default: "simplexity:bucket_mobs/illager/vindicator"
 WANDERING_TRADER:
-  default: 22155
+  default: "simplexity:bucket_mobs/misc/wandering_trader"
 WARDEN:
-  default: 22020
+  default: "simplexity:bucket_mobs/misc/warden"
 WITCH:
-  default: 22039
+  default: "simplexity:bucket_mobs/misc/witch"
 WITHER:
-  default: 22021
+  default: "simplexity:bucket_mobs/misc/wither"
 WITHER_SKELETON:
-  default: 22029
+  default: "simplexity:bucket_mobs/skeleton/wither_skeleton"
 WOLF:
-  default: 22123
+  default: "simplexity:bucket_mobs/wolf/pale_default"
+  Variant:
+    "minecraft:ashen": "simplexity:bucket_mobs/wolf/ashen_default"
+    "minecraft:black": "simplexity:bucket_mobs/wolf/black_default"
+    "minecraft:chestnut" : "simplexity:bucket_mobs/wolf/chestnut_default"
+    "minecraft:pale" : "simplexity:bucket_mobs/wolf/pale_default"
+    "minecraft:rusty" : "simplexity:bucket_mobs/wolf/rusty_default"
+    "minecraft:snowy" : "simplexity:bucket_mobs/wolf/snowy_default"
+    "minecraft:spotted" : "simplexity:bucket_mobs/wolf/spotted_default"
+    "minecraft:striped" : "simplexity:bucket_mobs/wolf/striped_default"
+    "minecraft:woods" : "simplexity:bucket_mobs/wolf/woods_default"
   # Tamed Wolf is temporarily in "special" (22049).
 ZOMBIE:
-  default: 22050
+  default: "simplexity:bucket_mobs/zombie/zombie"
 ZOMBIE_VILLAGER:
-  default: 22105
+  default: "simplexity:bucket_mobs/zombie_villager/default_default"
   VillagerData:
     profession:
-      "minecraft:armorer": 22139
-      "minecraft:butcher": 22140
-      "minecraft:cartographer": 22141
-      "minecraft:cleric": 22142
-      "minecraft:farmer": 22143
-      "minecraft:fisherman": 22144
-      "minecraft:fletcher": 22145
-      "minecraft:leatherworker": 22146
-      "minecraft:librarian": 22147
-      "minecraft:nitwit": 22149
-      "minecraft:none": 22153
-      "minecraft:mason": 22148
-      "minecraft:shepherd": 22150
-      "minecraft:toolsmith": 22151
-      "minecraft:weaponsmith": 22152
+      "minecraft:armorer": "simplexity:bucket_mobs/zombie_villager/armorer"
+      "minecraft:butcher": "simplexity:bucket_mobs/zombie_villager/butcher"
+      "minecraft:cartographer": "simplexity:bucket_mobs/zombie_villager/default_default"
+      "minecraft:cleric": "simplexity:bucket_mobs/zombie_villager/default_cleric"
+      "minecraft:farmer": "simplexity:bucket_mobs/zombie_villager/default_farmer"
+      "minecraft:fisherman": "simplexity:bucket_mobs/zombie_villager/default_fisherman"
+      "minecraft:fletcher": "simplexity:bucket_mobs/zombie_villager/default_fletcher"
+      "minecraft:leatherworker": "simplexity:bucket_mobs/zombie_villager/default_default"
+      "minecraft:librarian": "simplexity:bucket_mobs/zombie_villager/default_librarian"
+      "minecraft:nitwit": "simplexity:bucket_mobs/zombie_villager/default_default"
+      "minecraft:none": "simplexity:bucket_mobs/zombie_villager/default_default"
+      "minecraft:mason": "simplexity:bucket_mobs/zombie_villager/default_default"
+      "minecraft:shepherd": "simplexity:bucket_mobs/zombie_villager/default_shepherd"
+      "minecraft:toolsmith": "simplexity:bucket_mobs/zombie_villager/default_default"
+      "minecraft:weaponsmith": "simplexity:bucket_mobs/zombie_villager/default_weaponsmith"
 ZOMBIE_HORSE:
-  default: 22108
+  default: "simplexity:bucket_mobs/horse/zombie_default"
 ZOGLIN:
-  default: 22030
+  default: "simplexity:bucket_mobs/misc/zombified_hoglin"
 ZOMBIFIED_PIGLIN:
-  default: 22031
+  default: "simplexity:bucket_mobs/piglin/zombified_piglin"
 
 special:
-  fried: 22083
-  tamed_wolf: 22122
-  toast: 22062    # Currently does not work.
+  fried: "simplexity:bucket_mobs/misc/chicken"
+  tamed_wolf: "simplexity:bucket_mobs/wolf/pale_default"
+  toast: "simplexity:bucket_mobs/rabbit/toast"   # Currently does not work.
