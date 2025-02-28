@@ -20,6 +20,8 @@ BEE:
   default: "simplexity:bucket_mobs/misc/bee"
 BLAZE:
   default: "simplexity:bucket_mobs/misc/blaze"
+BOGGED:
+  default: "simplexity:bucket_mobs/skeleton/bogged"
 BREEZE:
   default: "simplexity:bucket_mobs/misc/breeze"
 CAMEL:
@@ -83,6 +85,8 @@ GLOW_SQUID:
   default: "simplexity:bucket_mobs/misc/glow_squid"
 GOAT:
   default: "simplexity:bucket_mobs/misc/goat"
+GIANT:
+  default: "simplexity:bucket_mobs/zombie/zombie"
 GUARDIAN:
   default: "simplexity:bucket_mobs/misc/guardian"
 HOGLIN:
