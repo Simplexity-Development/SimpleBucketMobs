@@ -1,5 +1,6 @@
 package simplexity.simplebucketmobs.config;
 
+import org.bukkit.NamespacedKey;
 import simplexity.simplebucketmobs.SimpleBucketMobs;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
@@ -41,7 +42,7 @@ public class Texture {
     public void setCustomData(EntityType type, ItemMeta meta, CompoundTag tag) {
         ConfigurationSection section = texture.getConfigurationSection(type.toString());
         if (section == null) return;
-        meta.setCustomModelData(section.getInt("default", 0));
+        setNewItemModel(meta, section);
         if (surprise(type, meta, tag)) return;
         String value = null;
         // Until we hit a dead end or found the path...
@@ -75,23 +76,23 @@ public class Texture {
         }
         if (value == null) return;
         assert section != null; // Guaranteed, ymlKey was pulled out of the keySet and the set was unmodified.
-        meta.setCustomModelData(section.getInt(value, meta.getCustomModelData()));
+        setNewItemModel(value, meta, section);
     }
 
     private boolean surprise(EntityType type, ItemMeta meta, CompoundTag tag) {
         ConfigurationSection section = texture.getConfigurationSection("special");
         if (section == null) return false;
         if (type == EntityType.CHICKEN && tag.getShort("Fire") > 0)  {
-            meta.setCustomModelData(section.getInt("fried", 0));
+            setNewItemModel("fried", meta, section);
             return true;
         }
         // Dog having owner workaround. TODO: Be smarter and figure a solution.
-        if (type == EntityType.WOLF && tag.hasUUID("Owner")) {
+        /*if (type == EntityType.WOLF && tag.hasUUID("Owner")) {
             meta.setCustomModelData(section.getInt("tamed_wolf", 0));
             return true;
         }
         // Toast Rabbit workaround.
-        /* TODO: Fix Toast Rabbit Workaround or be smarter and figure a solution.
+         TODO: Fix Toast Rabbit Workaround or be smarter and figure a solution.
         if (type == EntityType.RABBIT) {
             System.out.println("RABBIT");
             Tag name =  tag.get("CustomName");
@@ -107,6 +108,15 @@ public class Texture {
         }
         */
         return false;
+    }
+    private void setNewItemModel(ItemMeta meta, ConfigurationSection section) {
+        setNewItemModel("default", meta, section);
+    }
+    private void setNewItemModel(String key, ItemMeta meta, ConfigurationSection section) {
+        String modelLocation = section.getString(key, "minecraft:bucket");
+        String[] split = modelLocation.split(":");
+        NamespacedKey namespacedKey = new NamespacedKey(split[0], split[1]);
+        meta.setItemModel(namespacedKey);
     }
 
 }
