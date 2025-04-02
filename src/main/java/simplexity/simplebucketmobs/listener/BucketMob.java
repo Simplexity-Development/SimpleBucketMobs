@@ -1,22 +1,25 @@
 package simplexity.simplebucketmobs.listener;
 
-import org.bukkit.craftbukkit.entity.CraftLivingEntity;
-import simplexity.simplebucketmobs.SimpleBucketMobs;
-import simplexity.simplebucketmobs.config.Config;
-import simplexity.simplebucketmobs.config.Texture;
-import simplexity.simplebucketmobs.util.Message;
-import simplexity.simplebucketmobs.util.Permission;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.nbt.TagParser;
-import org.bukkit.*;
+import org.bukkit.GameMode;
+import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
+import org.bukkit.Sound;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
-
-import org.bukkit.entity.*;
+import org.bukkit.craftbukkit.entity.CraftLivingEntity;
+import org.bukkit.entity.ComplexEntityPart;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
+import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Monster;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -31,6 +34,11 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.util.BoundingBox;
+import simplexity.simplebucketmobs.SimpleBucketMobs;
+import simplexity.simplebucketmobs.config.Config;
+import simplexity.simplebucketmobs.config.Texture;
+import simplexity.simplebucketmobs.util.Message;
+import simplexity.simplebucketmobs.util.Permission;
 
 import java.io.IOException;
 
@@ -88,7 +96,11 @@ public class BucketMob implements Listener {
                 Placeholder.parsed("type_name_cased", entityTypeName),
                 Placeholder.component("display_name", customName != null ? customName : entityTypeComponent)
         ));
-        Texture.getInstance().setCustomData(entity.getType(), meta, tag);
+        if (Config.getInstance().isUseResourcePack()) {
+            Texture.getInstance().setCustomData(entity.getType(), meta, tag);
+        } else {
+            meta.setEnchantmentGlintOverride(true);
+        }
         mobBucket.setItemMeta(meta);
         if (player.getGameMode() != GameMode.CREATIVE) bucket.subtract();
         if (player.getInventory().firstEmpty() == -1) {
