@@ -50,11 +50,11 @@ public class Config {
     public void reloadConfig() {
         SimpleBucketMobs.getPlugin().reloadConfig();
         FileConfiguration config = SimpleBucketMobs.getPlugin().getConfig();
-        setupTypes(config);
         bucketTitle = config.getString("bucket-title", "<aqua><type> Bucket");
         noHostileTargeting = config.getBoolean("no-hostile-targeting", true);
         listIsBlacklist = config.getBoolean("list-is-blacklist", false);
         useResourcePack = config.getBoolean("use-resource-pack", true);
+        setupTypes(config);
     }
 
     private void setupTypes(FileConfiguration config) {
