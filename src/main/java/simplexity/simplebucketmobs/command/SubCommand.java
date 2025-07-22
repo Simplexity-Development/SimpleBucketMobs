@@ -1,7 +1,7 @@
 package simplexity.simplebucketmobs.command;
 
-import simplexity.simplebucketmobs.util.Permission;
 import org.bukkit.command.CommandSender;
+import org.bukkit.permissions.Permission;
 
 import java.util.List;
 
@@ -30,7 +30,9 @@ public abstract class SubCommand {
         return syntax;
     }
 
-    public String getPermission() { return permission.get(); }
+    public Permission getPermission() {
+        return permission;
+    }
 
     public abstract void execute(CommandSender sender, String[] args);
 

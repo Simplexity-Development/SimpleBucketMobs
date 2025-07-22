@@ -3,7 +3,7 @@ package simplexity.simplebucketmobs.command.subcommand;
 import simplexity.simplebucketmobs.command.SubCommand;
 import simplexity.simplebucketmobs.listener.BucketMob;
 import simplexity.simplebucketmobs.util.Message;
-import simplexity.simplebucketmobs.util.Permission;
+import simplexity.simplebucketmobs.util.BucketMobPermission;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.EquipmentSlot;
@@ -15,7 +15,7 @@ import java.util.List;
 
 public class Debucket extends SubCommand {
     public Debucket() {
-        super("debucket", "Allows you to dump the JSON NBT data to the player chat.", "/sbm debucket", Permission.COMMAND_DEBUCKET);
+        super("debucket", "Allows you to dump the JSON NBT data to the player chat.", "/sbm debucket", BucketMobPermission.DEBUCKET_COMMAND);
     }
 
     @Override
@@ -24,7 +24,7 @@ public class Debucket extends SubCommand {
             sender.sendMessage(Message.ERROR_NOT_A_PLAYER.getParsedMessage());
             return;
         }
-        if (!sender.hasPermission(Permission.COMMAND_DEBUCKET.get())) {
+        if (!sender.hasPermission(BucketMobPermission.DEBUCKET_COMMAND)) {
             sender.sendMessage(Message.ERROR_COMMAND_NO_PERMISSION.getParsedMessage());
             return;
         }

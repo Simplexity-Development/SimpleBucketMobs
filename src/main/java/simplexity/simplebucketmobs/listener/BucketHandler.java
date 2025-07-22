@@ -4,16 +4,15 @@ import io.papermc.paper.datacomponent.DataComponentTypes;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
-import org.bukkit.NamespacedKey;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataType;
-import simplexity.simplebucketmobs.SimpleBucketMobs;
 
 import java.util.HashMap;
 
+@SuppressWarnings({"UnstableApiUsage", "deprecation"})
 public class BucketHandler {
 
     public static ItemStack getMobBucket(LivingEntity entity) {
@@ -28,7 +27,7 @@ public class BucketHandler {
     }
 
 
-    public static void addBucketToInventory(Player player, ItemStack bucket) {
+    public static void addMobBucketToInventory(Player player, ItemStack bucket) {
         Inventory inventory = player.getInventory();
         int amountOfBuckets = player.getInventory().getItemInMainHand().getAmount();
         player.getInventory().getItemInMainHand().setAmount(amountOfBuckets - 1);
