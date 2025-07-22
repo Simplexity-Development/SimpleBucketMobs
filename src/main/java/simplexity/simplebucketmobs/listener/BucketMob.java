@@ -1,12 +1,14 @@
 package simplexity.simplebucketmobs.listener;
 
 import io.papermc.paper.persistence.PersistentDataContainerView;
+import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Monster;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -16,6 +18,7 @@ import org.bukkit.inventory.ItemStack;
 import simplexity.simplebucketmobs.SimpleBucketMobs;
 import simplexity.simplebucketmobs.config.Config;
 import simplexity.simplebucketmobs.util.BucketMobPermission;
+import simplexity.simplebucketmobs.util.Message;
 
 public class BucketMob implements Listener {
 
@@ -28,6 +31,14 @@ public class BucketMob implements Listener {
         Player player = interactEvent.getPlayer();
         if (!(entity instanceof LivingEntity livingEntity)) return;
         EntityType type = livingEntity.getType();
+        if (livingEntity instanceof Monster monster) {
+            LivingEntity target = monster.getTarget();
+            if (target != null && Config.getInstance().isNoHostileTargeting() && monster.isAggressive() && target.equals(player)) {
+                player.sendRichMessage(Message.ERROR_BUCKET_HOSTILE_TARGETING.getMessage(),
+                        Placeholder.parsed("prefix", Message.PREFIX.getMessage()));
+                return;
+            }
+        }
         if (!Config.getInstance().getAllowedBasicTypes().contains(type)) return;
         if (!(player.hasPermission(BucketMobPermission.BUCKET_MOB_BASE + type.toString().toLowerCase()) || player.hasPermission(BucketMobPermission.BUCKET_ALL)))
             return;
@@ -57,6 +68,4 @@ public class BucketMob implements Listener {
         if (bucketPdc.has(newMobTag)) EntityHandler.handleMobSpawn(player, itemStack, block);
         if (bucketPdc.has(legacyMobTag)) EntityHandler.handleLegacyMobSpawn(player, itemStack, block);
     }
-
-
 }

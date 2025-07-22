@@ -9,5 +9,5 @@ public class BucketMobPermission {
     public static final Permission COMMAND_RELOAD = new Permission("simplebucketmobs.reload", "Reload plugin configuration files.", PermissionDefault.OP);
 
     public static final Permission BUCKET_MOB_BASE = new Permission("simplebucketmobs.bucket.", "Allows the user to bucket the specified mob.", PermissionDefault.OP);
-    public static final Permission BUCKET_ALL = new Permission("simplebucketmobs.bucket.all", "Allows the user to bucket all enabled mobs.", PermissionDefault.TRUE);
+    public static final Permission BUCKET_ALL = new Permission("simplebucketmobs.bucket.all", "Allows the user to bucket all enabled mobs.", PermissionDefault.OP);
 }

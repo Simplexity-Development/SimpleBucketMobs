@@ -21,3 +21,4 @@ permissions:
     default: op
   simplebucketmobs.debucket:
     description: "Dump saved mob NBT data from Mob Bucket to chat."
+    default: op
