@@ -39,84 +39,84 @@ public class Texture {
         catch (IOException | InvalidConfigurationException e) { e.printStackTrace(); }
     }
 
-    public void setCustomData(EntityType type, ItemMeta meta, CompoundTag tag) {
-        ConfigurationSection section = texture.getConfigurationSection(type.toString());
-        if (section == null) return;
-        setNewItemModel(meta, section);
-        if (surprise(type, meta, tag)) return;
-        String value = null;
-        // Until we hit a dead end or found the path...
-        while (true) {
-            String ymlKey = null;
-            // Find a valid key to look into.
-            for (String key : section.getKeys(false)) {
-                // If the tag does not exist, ignore this value.
-                if (!tag.contains(key)) continue;
-                ymlKey = key;
-                break;
-            }
-            if (ymlKey == null) break;
-            // If the key does not lead to a configuration section, we cannot continue.
-            if (!section.isConfigurationSection(ymlKey)) {
-                break;
-            }
-            // If the tag is not a CompoundTag, this is the value we need.
-            // TODO: Make it so if a value "exists" it is true, not just that the value is set to a specific one.
-            if (!tag.contains(ymlKey, 10)) {
-                Tag currentTag = tag.get(ymlKey);
-                assert currentTag != null; // Guaranteed, we checked.
-                value = currentTag.getAsString();
-                section = section.getConfigurationSection(ymlKey);
-                break;
-            }
-            // Otherwise, go deeper...
-            section = section.getConfigurationSection(ymlKey);
-            tag = tag.getCompound(ymlKey);
-            assert section != null; // Guaranteed, ymlKey was pulled out of the keySet and the set was unmodified.
-        }
-        if (value == null) return;
-        assert section != null; // Guaranteed, ymlKey was pulled out of the keySet and the set was unmodified.
-        setNewItemModel(value, meta, section);
-    }
-
-    private boolean surprise(EntityType type, ItemMeta meta, CompoundTag tag) {
-        ConfigurationSection section = texture.getConfigurationSection("special");
-        if (section == null) return false;
-        if (type == EntityType.CHICKEN && tag.getShort("Fire") > 0)  {
-            setNewItemModel("fried", meta, section);
-            return true;
-        }
-        // Dog having owner workaround. TODO: Be smarter and figure a solution.
-        /*if (type == EntityType.WOLF && tag.hasUUID("Owner")) {
-            meta.setCustomModelData(section.getInt("tamed_wolf", 0));
-            return true;
-        }
-        // Toast Rabbit workaround.
-         TODO: Fix Toast Rabbit Workaround or be smarter and figure a solution.
-        if (type == EntityType.RABBIT) {
-            System.out.println("RABBIT");
-            Tag name =  tag.get("CustomName");
-            if (name != null) {
-                System.out.println("RABBIT NAME");
-                 Component nameComponent = SimpleBucketMobs.getGsonSerializer().deserialize(name.toString());
-                 if (SimpleBucketMobs.getMiniMessage().stripTags(nameString).equals("Toast")) {
-                     System.out.println("RABBIT NAME TOAST");
-                     meta.setCustomModelData(section.getInt("toast", 0));
-                     return true;
-                 }
-            }
-        }
-        */
-        return false;
-    }
-    private void setNewItemModel(ItemMeta meta, ConfigurationSection section) {
-        setNewItemModel("default", meta, section);
-    }
-    private void setNewItemModel(String key, ItemMeta meta, ConfigurationSection section) {
-        String modelLocation = section.getString(key, "minecraft:bucket");
-        String[] split = modelLocation.split(":");
-        NamespacedKey namespacedKey = new NamespacedKey(split[0], split[1]);
-        meta.setItemModel(namespacedKey);
-    }
+//    public void setCustomData(EntityType type, ItemMeta meta, CompoundTag tag) {
+//        ConfigurationSection section = texture.getConfigurationSection(type.toString());
+//        if (section == null) return;
+//        setNewItemModel(meta, section);
+//        if (surprise(type, meta, tag)) return;
+//        String value = null;
+//        // Until we hit a dead end or found the path...
+//        while (true) {
+//            String ymlKey = null;
+//            // Find a valid key to look into.
+//            for (String key : section.getKeys(false)) {
+//                // If the tag does not exist, ignore this value.
+//                if (!tag.contains(key)) continue;
+//                ymlKey = key;
+//                break;
+//            }
+//            if (ymlKey == null) break;
+//            // If the key does not lead to a configuration section, we cannot continue.
+//            if (!section.isConfigurationSection(ymlKey)) {
+//                break;
+//            }
+//            // If the tag is not a CompoundTag, this is the value we need.
+//            // TODO: Make it so if a value "exists" it is true, not just that the value is set to a specific one.
+//            if (!tag.contains(ymlKey, 10)) {
+//                Tag currentTag = tag.get(ymlKey);
+//                assert currentTag != null; // Guaranteed, we checked.
+//                value = currentTag.getAsString();
+//                section = section.getConfigurationSection(ymlKey);
+//                break;
+//            }
+//            // Otherwise, go deeper...
+//            section = section.getConfigurationSection(ymlKey);
+//            tag = tag.getCompound(ymlKey);
+//            assert section != null; // Guaranteed, ymlKey was pulled out of the keySet and the set was unmodified.
+//        }
+//        if (value == null) return;
+//        assert section != null; // Guaranteed, ymlKey was pulled out of the keySet and the set was unmodified.
+//        setNewItemModel(value, meta, section);
+//    }
+//
+//    private boolean surprise(EntityType type, ItemMeta meta, CompoundTag tag) {
+//        ConfigurationSection section = texture.getConfigurationSection("special");
+//        if (section == null) return false;
+//        if (type == EntityType.CHICKEN && tag.getShort("Fire") > 0)  {
+//            setNewItemModel("fried", meta, section);
+//            return true;
+//        }
+//        // Dog having owner workaround. TODO: Be smarter and figure a solution.
+//        /*if (type == EntityType.WOLF && tag.hasUUID("Owner")) {
+//            meta.setCustomModelData(section.getInt("tamed_wolf", 0));
+//            return true;
+//        }
+//        // Toast Rabbit workaround.
+//         TODO: Fix Toast Rabbit Workaround or be smarter and figure a solution.
+//        if (type == EntityType.RABBIT) {
+//            System.out.println("RABBIT");
+//            Tag name =  tag.get("CustomName");
+//            if (name != null) {
+//                System.out.println("RABBIT NAME");
+//                 Component nameComponent = SimpleBucketMobs.getGsonSerializer().deserialize(name.toString());
+//                 if (SimpleBucketMobs.getMiniMessage().stripTags(nameString).equals("Toast")) {
+//                     System.out.println("RABBIT NAME TOAST");
+//                     meta.setCustomModelData(section.getInt("toast", 0));
+//                     return true;
+//                 }
+//            }
+//        }
+//        */
+//        return false;
+//    }
+//    private void setNewItemModel(ItemMeta meta, ConfigurationSection section) {
+//        setNewItemModel("default", meta, section);
+//    }
+//    private void setNewItemModel(String key, ItemMeta meta, ConfigurationSection section) {
+//        String modelLocation = section.getString(key, "minecraft:bucket");
+//        String[] split = modelLocation.split(":");
+//        NamespacedKey namespacedKey = new NamespacedKey(split[0], split[1]);
+//        meta.setItemModel(namespacedKey);
+//    }
 
 }

@@ -1,0 +1,110 @@
+{
+    AbsorptionAmount: 0.0f,
+    Age: 0,
+    AgeLocked: 0b,
+    Air: 300s,
+    ArmorDropChances: [
+        0.085f,
+        0.085f,
+        0.085f,
+        0.085f
+    ],
+    ArmorItems: [
+        {},
+        {},
+        {},
+        {}
+    ],
+    Brain: {
+        memories: {}
+    },
+    Bukkit.Aware: 1b,
+    Bukkit.updateLevel: 2,
+    CanPickUpLoot: 0b,
+    DeathTime: 0s,
+    FallDistance: 0.0f,
+    FallFlying: 0b,
+    Fire: -1s,
+    ForcedAge: 0,
+    HandDropChances: [
+        0.085f,
+        0.085f
+    ],
+    HandItems: [
+        {},
+        {}
+    ],
+    Health: 10.0f,
+    HurtByTimestamp: 0,
+    HurtTime: 0s,
+    InLove: 0,
+    Invulnerable: 0b,
+    LeftHanded: 0b,
+    Motion: [
+        0.0d,
+        -0.0784000015258789d,
+        0.0d
+    ],
+    OnGround: 1b,
+    Paper.Origin: [
+        5.5d,
+        63.0d,
+        -100.5d
+    ],
+    Paper.OriginWorld: [
+        I;-1033631177,
+        -379630048,
+        -1565680706,
+        -46542190
+    ],
+    Paper.SpawnReason: "SPAWNER_EGG",
+    PersistenceRequired: 0b,
+    PortalCooldown: 0,
+    Pos: [
+        5.5d,
+        63.0d,
+        -100.5d
+    ],
+    Purpur.ShouldBurnInDay: 0b,
+    Purpur.ticksSinceLastInteraction: 0,
+    Rotation: [
+        -35.886017f,
+        -11.023556f
+    ],
+    Saddle: 0b,
+    Spigot.ticksLived: 26,
+    UUID: [
+        I;-1326762373,
+        -430356289,
+        -1868207975,
+        1454220499
+    ],
+    WorldUUIDLeast: -6724547423999765870L,
+    WorldUUIDMost: -4439412097425650144L,
+    attributes: [
+        {
+            base: 0.25d,
+            id: "minecraft:movement_speed"
+        },
+        {
+            base: 16.0d,
+            id: "minecraft:follow_range",
+            modifiers: [
+                {
+                    amount: -0.027825571221113208d,
+                    id: "minecraft:random_spawn_bonus",
+                    operation: "add_multiplied_base"
+                }
+            ]
+        },
+        {
+            base: 1.0d,
+            id: "minecraft:scale"
+        },
+        {
+            base: 10.0d,
+            id: "minecraft:max_health"
+        }
+    ],
+    id: "minecraft:pig"
+}

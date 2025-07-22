@@ -30,7 +30,7 @@ public class Debucket extends SubCommand {
         }
         ItemStack item = player.getInventory().getItem(EquipmentSlot.HAND);
         PersistentDataContainer pdc = item.getItemMeta().getPersistentDataContainer();
-        String nbt = pdc.get(BucketMob.mobNBTKey, PersistentDataType.STRING);
+        String nbt = pdc.get(BucketMob.legacyMobTag, PersistentDataType.STRING);
         if (nbt == null) {
             player.sendMessage(Message.ERROR_NO_BUCKET_MOB.getParsedMessage());
             return;

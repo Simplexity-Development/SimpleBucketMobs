@@ -2,8 +2,8 @@ version = "1.2.1"
 
 plugins {
     `java-library`
-    id("io.papermc.paperweight.userdev") version "2.0.0-beta.8"
-    id("xyz.jpenilla.run-paper") version "2.3.1" // Adds runServer and runMojangMappedServer tasks for testing
+    id("io.papermc.paperweight.userdev") version "2.0.0-beta.17"
+
 }
 
 java {
@@ -15,12 +15,12 @@ repositories {
 }
 
 dependencies {
-    paperweight.paperDevBundle("1.21.4-R0.1-SNAPSHOT")
+    paperweight.paperDevBundle("1.21.7-R0.1-SNAPSHOT")
 }
 
 tasks {
     assemble {
-        dependsOn("reobfJar")
+        paperweight.reobfArtifactConfiguration = io.papermc.paperweight.userdev.ReobfArtifactConfiguration.MOJANG_PRODUCTION
     }
 
     compileJava {
