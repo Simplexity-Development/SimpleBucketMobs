@@ -1,9 +1,14 @@
 package simplexity.simplebucketmobs.listener;
 
+import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import io.papermc.paper.datacomponent.DataComponentTypes;
 import io.papermc.paper.persistence.PersistentDataContainerView;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.TextDecoration;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtIo;
+import net.minecraft.nbt.TagParser;
+import net.minecraft.world.level.storage.ValueInput;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -11,6 +16,8 @@ import org.bukkit.NamespacedKey;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityFactory;
+import org.bukkit.entity.EntitySnapshot;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -21,6 +28,7 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.util.BoundingBox;
+import org.checkerframework.checker.units.qual.C;
 import simplexity.simplebucketmobs.SimpleBucketMobs;
 import simplexity.simplebucketmobs.config.Config;
 import simplexity.simplebucketmobs.util.Permission;
@@ -45,11 +53,8 @@ public class BucketMob implements Listener {
         PersistentDataContainerView bucketPdcView = itemInHand.getPersistentDataContainer();
         if (bucketPdcView.has(legacyMobTag)) return;
         if (bucketPdcView.has(newMobTag)) return;
-        byte[] serializedEntity = Bukkit.getUnsafe().serializeEntity(livingEntity);
-        ItemStack newBucket = ItemStack.of(Material.BUCKET);
-        newBucket.editPersistentDataContainer(pdc -> pdc.set(newMobTag, PersistentDataType.BYTE_ARRAY, serializedEntity));
-        newBucket.setData(DataComponentTypes.CUSTOM_NAME, Component.text(type + " in a bucket"));
-        player.getInventory().setItemInMainHand(newBucket);
+        ItemStack bucketItem = BucketHandler.getMobBucket(livingEntity);
+        BucketHandler.addBucketToInventory(player, bucketItem);
         livingEntity.remove();
         interactEvent.setCancelled(true);
     }
@@ -63,6 +68,13 @@ public class BucketMob implements Listener {
         if (block == null || block.getType().equals(Material.AIR)) return;
         if (!itemStack.getType().equals(Material.BUCKET)) return;
         PersistentDataContainerView bucketPdc = itemStack.getPersistentDataContainer();
+        if (bucketPdc.has(legacyMobTag)) {
+            String entityNbt = bucketPdc.get(legacyMobTag, PersistentDataType.STRING);
+            spawnOldMobs(entityNbt, block.getLocation().toCenterLocation().add(0, 1, 0));
+            interactEvent.setCancelled(true);
+            interactEvent.getPlayer().getInventory().setItemInMainHand(new ItemStack(Material.BUCKET));
+            return;
+        }
         if (!bucketPdc.has(newMobTag)) return;
         byte[] entityByteArray = bucketPdc.get(newMobTag, PersistentDataType.BYTE_ARRAY);
         if (entityByteArray == null) return;
@@ -72,57 +84,20 @@ public class BucketMob implements Listener {
         if (!(player.hasPermission(Permission.BUCKET_MOB.get() + deserializedEntity.getType()) || player.hasPermission(Permission.BUCKET_ALL.get())))
             return;
         Location clickedLocation = block.getLocation();
-        Location summonPoint = findSafeSummonPoint(clickedLocation.getWorld(), clickedLocation, deserializedEntity.getBoundingBox(), 5);
-        if (summonPoint == null) {
-            summonPoint = block.getLocation().toCenterLocation().add(0, 1, 0);
-        }
+        Location summonPoint = block.getLocation().toCenterLocation().add(0, 1, 0);
+
+        if (Bukkit.getEntity(livingEntity.getUniqueId()) != null) livingEntity = (LivingEntity) livingEntity.copy();
         interactEvent.setCancelled(true);
         livingEntity.teleport(summonPoint);
         summonPoint.getWorld().addEntity(livingEntity);
-        itemStack.editPersistentDataContainer(pdc -> pdc.remove(newMobTag));
-        itemStack.setData(DataComponentTypes.CUSTOM_NAME, Component.translatable("item.minecraft.bucket").decoration(TextDecoration.ITALIC, false));
+        player.getInventory().setItemInMainHand(new ItemStack(Material.BUCKET));
     }
 
 
-    public static Location findSafeSummonPoint(World world, Location center, BoundingBox boundingBox, int radius) {
-        double width = boundingBox.getWidthX();
-        double depth = boundingBox.getWidthZ();
-        double height = boundingBox.getHeight();
-
-        for (int distY = -2; distY <= 2; distY++) {
-            for (int distX = -radius; distX <= radius; distX++) {
-                for (int distZ = -radius; distZ <= radius; distZ++) {
-                    Location startingLocation = new Location(world, center.getX() + distX, distY, center.getZ() + distZ);
-                    if (isAreaClear(world, startingLocation, width, height, depth)) {
-                        return startingLocation.add(0.5, 0, 0.5);
-                    }
-
-                }
-            }
-        }
-        return null;
+    private void spawnOldMobs(String nbt, Location location) {
+        EntitySnapshot entitySnapshot = Bukkit.getEntityFactory().createEntitySnapshot(nbt);
+        entitySnapshot.createEntity(location);
     }
 
-    public static boolean isAreaClear(World world, Location startLoc, double width, double height, double depth) {
-        int minX = (int) Math.floor(startLoc.getX() - (width / 2));
-        int maxX = (int) Math.ceil(startLoc.getX() + (width / 2));
-        int minY = startLoc.getBlockY();
-        int maxY = (int) Math.ceil(startLoc.getY() + height);
-        int minZ = (int) Math.floor(startLoc.getZ() - (depth / 2));
-        int maxZ = (int) Math.ceil(startLoc.getZ() + (depth / 2));
-
-        Block floor = world.getBlockAt(startLoc.getBlockX(), startLoc.getBlockY() - 1, startLoc.getBlockZ());
-        if (!floor.getType().isSolid()) return false;
-
-        for (int x = minX; x <= maxX; x++) {
-            for (int y = minY; y <= maxY; y++) {
-                for (int z = minZ; z <= maxZ; z++) {
-                    Block block = world.getBlockAt(x, y, z);
-                    if (!block.isPassable()) return false;
-                }
-            }
-        }
-        return true;
-    }
 
 }
