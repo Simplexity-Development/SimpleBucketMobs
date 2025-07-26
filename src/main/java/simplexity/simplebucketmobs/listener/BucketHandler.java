@@ -32,9 +32,21 @@ public class BucketHandler {
         byte[] serializedEntity = Bukkit.getUnsafe().serializeEntity(entity);
         if (Config.getInstance().isUseResourcePack()) {
             String itemModelString = Texture.getInstance().getItemModel(entity);
-            String[] split = itemModelString.split(":");
-            NamespacedKey namespacedKey = new NamespacedKey(split[0], split[1]);
-            bucketStack.setData(DataComponentTypes.ITEM_MODEL, namespacedKey);
+
+            if (itemModelString == null || !itemModelString.contains(":")) {
+                Bukkit.getLogger().warning("Invalid or missing item model string for entity: " + entity.getType() +
+                                           ". Value: '" + itemModelString + "'");
+            } else {
+                String[] split = itemModelString.trim().split(":");
+
+                if (split.length != 2 || split[0].isEmpty() || split[1].isEmpty()) {
+                    Bukkit.getLogger().warning("Malformed item model string for entity: " + entity.getType() +
+                                               ". Value: '" + itemModelString + "'");
+                } else {
+                    NamespacedKey namespacedKey = new NamespacedKey(split[0], split[1]);
+                    bucketStack.setData(DataComponentTypes.ITEM_MODEL, namespacedKey);
+                }
+            }
         }
         bucketStack.editPersistentDataContainer(pdc -> pdc.set(BucketMob.newMobTag, PersistentDataType.BYTE_ARRAY, serializedEntity));
         return bucketStack;
