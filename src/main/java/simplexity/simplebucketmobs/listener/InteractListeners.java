@@ -64,7 +64,7 @@ public class InteractListeners implements Listener {
         if (interactEvent.getAction().isLeftClick()) return;
         if (!interactEvent.hasBlock()) return;
         if (block == null || block.getType().equals(Material.AIR)) return;
-        if (!itemStack.getType().equals(Material.BUCKET)) return;
+        if (!(itemStack.getType().equals(Material.BUCKET) || itemStack.getType().equals(ConfigHandler.getInstance().getMobBucketMaterial()))) return;
         if (!(bucketPdc.has(newMobTag) || bucketPdc.has(legacyMobTag))) return;
         interactEvent.setCancelled(true);
         if (bucketPdc.has(newMobTag)) EntityHandler.handleMobSpawn(player, itemStack, block);
@@ -82,6 +82,5 @@ public class InteractListeners implements Listener {
         }
         if (itemUsed.getPersistentDataContainer().has(legacyMobTag) ||
             itemUsed.getPersistentDataContainer().has(newMobTag)) bucketFillEvent.setCancelled(true);
-
     }
 }

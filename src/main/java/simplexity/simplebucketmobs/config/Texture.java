@@ -1,6 +1,7 @@
 package simplexity.simplebucketmobs.config;
 
 import org.bukkit.DyeColor;
+import org.bukkit.NamespacedKey;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -21,6 +22,7 @@ import org.bukkit.entity.Shulker;
 import org.bukkit.entity.TraderLlama;
 import org.bukkit.entity.Villager;
 import org.bukkit.entity.Wolf;
+import org.slf4j.Logger;
 import simplexity.simplebucketmobs.SimpleBucketMobs;
 
 import java.io.File;
@@ -34,6 +36,7 @@ public class Texture {
     private final String fileName = "texture.yml";
     private final File dataFile = new File(SimpleBucketMobs.getPlugin().getDataFolder(), fileName);
     private final FileConfiguration texture = new YamlConfiguration();
+    private final Logger logger = SimpleBucketMobs.getPlugin().getSLF4JLogger();
 
     private Texture() {
         if (!dataFile.exists()) SimpleBucketMobs.getPlugin().saveResource(fileName, false);
@@ -57,7 +60,17 @@ public class Texture {
         }
     }
 
-    public String getItemModel(LivingEntity entity) {
+    public NamespacedKey getItemModel(LivingEntity entity) {
+        String itemModelLocation = locateItemModel(entity);
+        NamespacedKey key = NamespacedKey.fromString(itemModelLocation);
+        if (key == null) {
+            logger.warn("Invalid or missing item model string for entity: {} Value: '{}'", entity.getType(), itemModelLocation);
+            return ConfigHandler.getInstance().getDefaultModel();
+        }
+        return key;
+    }
+
+    private String locateItemModel(LivingEntity entity) {
         if (entity instanceof Cat cat) return getCatItemModel(cat);
         if (entity instanceof Chicken chicken) return getChickenItemModel(chicken);
         if (entity instanceof Cow cow) return getCowItemModel(cow);
