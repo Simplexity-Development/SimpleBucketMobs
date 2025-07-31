@@ -13,7 +13,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataType;
 import simplexity.simplebucketmobs.SimpleBucketMobs;
-import simplexity.simplebucketmobs.config.Config;
+import simplexity.simplebucketmobs.config.ConfigHandler;
 import simplexity.simplebucketmobs.config.Texture;
 
 import java.util.HashMap;
@@ -30,7 +30,7 @@ public class BucketHandler {
         bucketStack.setData(DataComponentTypes.CUSTOM_NAME, nameComponent);
         bucketStack.setData(DataComponentTypes.ENCHANTMENT_GLINT_OVERRIDE, true);
         byte[] serializedEntity = Bukkit.getUnsafe().serializeEntity(entity);
-        if (Config.getInstance().isUseResourcePack()) {
+        if (ConfigHandler.getInstance().isUsingResourcePack()) {
             String itemModelString = Texture.getInstance().getItemModel(entity);
 
             if (itemModelString == null || !itemModelString.contains(":")) {
@@ -48,7 +48,7 @@ public class BucketHandler {
                 }
             }
         }
-        bucketStack.editPersistentDataContainer(pdc -> pdc.set(BucketMob.newMobTag, PersistentDataType.BYTE_ARRAY, serializedEntity));
+        bucketStack.editPersistentDataContainer(pdc -> pdc.set(InteractListeners.newMobTag, PersistentDataType.BYTE_ARRAY, serializedEntity));
         return bucketStack;
     }
 
@@ -69,7 +69,7 @@ public class BucketHandler {
         if (entityName == null) entityName = entity.name();
         String typeName = entity.getType().name();
         String typeNameCased = nameCase(typeName);
-        String configName = Config.getInstance().getBucketTitle();
+        String configName = ConfigHandler.getInstance().getBucketTitle();
         return miniMessage.deserialize(configName,
                 Placeholder.component("display_name", entityName),
                 Placeholder.parsed("type", entity.getType().name()),

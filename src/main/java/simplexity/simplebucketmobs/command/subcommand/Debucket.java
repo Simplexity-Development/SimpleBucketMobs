@@ -1,7 +1,7 @@
 package simplexity.simplebucketmobs.command.subcommand;
 
 import simplexity.simplebucketmobs.command.SubCommand;
-import simplexity.simplebucketmobs.listener.BucketMob;
+import simplexity.simplebucketmobs.listener.InteractListeners;
 import simplexity.simplebucketmobs.util.Message;
 import simplexity.simplebucketmobs.util.BucketMobPermission;
 import org.bukkit.command.CommandSender;
@@ -30,7 +30,7 @@ public class Debucket extends SubCommand {
         }
         ItemStack item = player.getInventory().getItem(EquipmentSlot.HAND);
         PersistentDataContainer pdc = item.getItemMeta().getPersistentDataContainer();
-        String nbt = pdc.get(BucketMob.legacyMobTag, PersistentDataType.STRING);
+        String nbt = pdc.get(InteractListeners.legacyMobTag, PersistentDataType.STRING);
         if (nbt == null) {
             player.sendMessage(Message.ERROR_NO_BUCKET_MOB.getParsedMessage());
             return;
