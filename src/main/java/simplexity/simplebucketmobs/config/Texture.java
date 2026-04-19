@@ -5,30 +5,13 @@ import org.bukkit.NamespacedKey;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.entity.Cat;
-import org.bukkit.entity.Chicken;
-import org.bukkit.entity.Cow;
-import org.bukkit.entity.Fox;
-import org.bukkit.entity.Frog;
-import org.bukkit.entity.Horse;
-import org.bukkit.entity.LivingEntity;
-import org.bukkit.entity.Llama;
-import org.bukkit.entity.MushroomCow;
-import org.bukkit.entity.Parrot;
-import org.bukkit.entity.Pig;
-import org.bukkit.entity.Rabbit;
-import org.bukkit.entity.Sheep;
-import org.bukkit.entity.Shulker;
-import org.bukkit.entity.TraderLlama;
-import org.bukkit.entity.Villager;
-import org.bukkit.entity.Wolf;
+import org.bukkit.entity.*;
 import org.slf4j.Logger;
 import simplexity.simplebucketmobs.SimpleBucketMobs;
 
 import java.io.File;
 import java.io.IOException;
 
-@SuppressWarnings({"CallToPrintStackTrace"})
 public class Texture {
 
     private static Texture instance;
@@ -56,7 +39,7 @@ public class Texture {
         try {
             texture.load(dataFile);
         } catch (IOException | InvalidConfigurationException e) {
-            e.printStackTrace();
+            logger.error("Failed to load {}", fileName, e);
         }
     }
 
@@ -73,6 +56,7 @@ public class Texture {
     private String locateItemModel(LivingEntity entity) {
         if (entity instanceof Cat cat) return getCatItemModel(cat);
         if (entity instanceof Chicken chicken) return getChickenItemModel(chicken);
+        if (entity instanceof MushroomCow mooshroom) return getMooshroomItemModel(mooshroom);
         if (entity instanceof Cow cow) return getCowItemModel(cow);
         if (entity instanceof Fox fox) return getFoxItemModel(fox);
         if (entity instanceof Frog frog) return getFrogItemModel(frog);
@@ -80,7 +64,6 @@ public class Texture {
         // Have to do this first otherwise llama will eat it
         if (entity instanceof TraderLlama traderLlama) return getTraderLlamaItemModel(traderLlama);
         if (entity instanceof Llama llama) return getLlamaItemModel(llama);
-        if (entity instanceof MushroomCow mooshroom) return getMooshroomItemModel(mooshroom);
         if (entity instanceof Parrot parrot) return getParrotItemModel(parrot);
         if (entity instanceof Pig pig) return getPigItemModel(pig);
         if (entity instanceof Rabbit rabbit) return getRabbitItemModel(rabbit);
@@ -98,13 +81,13 @@ public class Texture {
     }
 
     public String getChickenItemModel(Chicken chicken) {
-        Chicken.Variant chickenType = chicken.getVariant();
+        EntityType chickenType = chicken.getType();
         String defaultTexture = texture.getString("chicken.default", "minecraft:bucket");
         return texture.getString("chicken.type." + chickenType.toString().toLowerCase(), defaultTexture);
     }
 
     public String getCowItemModel(Cow cow) {
-        Cow.Variant cowType = cow.getVariant();
+        EntityType cowType = cow.getType();
         String defaultTexture = texture.getString("cow.default", "minecraft:bucket");
         return texture.getString("cow.type." + cowType.toString().toLowerCase(), defaultTexture);
     }
@@ -150,7 +133,7 @@ public class Texture {
     }
 
     public String getPigItemModel(Pig pig) {
-        Pig.Variant pigType = pig.getVariant();
+        EntityType pigType = pig.getType();
         String defaultTexture = texture.getString("pig.default", "minecraft:bucket");
         return texture.getString("pig.type." + pigType.toString().toLowerCase(), defaultTexture);
     }

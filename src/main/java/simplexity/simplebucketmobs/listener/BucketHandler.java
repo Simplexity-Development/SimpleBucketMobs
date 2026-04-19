@@ -27,7 +27,7 @@ public class BucketHandler {
         bucketStack.setData(DataComponentTypes.MAX_STACK_SIZE, 1);
         Component nameComponent = getBucketName(entity);
         bucketStack.setData(DataComponentTypes.CUSTOM_NAME, nameComponent);
-        bucketStack.setData(DataComponentTypes.ENCHANTMENT_GLINT_OVERRIDE, true);
+        bucketStack.setData(DataComponentTypes.ENCHANTMENT_GLINT_OVERRIDE, ConfigHandler.getInstance().isEnchantmentGlint());
         byte[] serializedEntity = Bukkit.getUnsafe().serializeEntity(entity);
         if (ConfigHandler.getInstance().isUsingResourcePack()) {
             NamespacedKey modelKey = Texture.getInstance().getItemModel(entity);

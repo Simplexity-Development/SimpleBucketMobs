@@ -26,8 +26,11 @@ public class InteractListeners implements Listener {
 
     public static final NamespacedKey legacyMobTag = new NamespacedKey(SimpleBucketMobs.getPlugin(), "mob_nbt");
     public static final NamespacedKey newMobTag = new NamespacedKey(SimpleBucketMobs.getPlugin(), "serialized_mob_data");
+
     @EventHandler(ignoreCancelled = true)
     public void onBucketMob(PlayerInteractEntityEvent interactEvent) {
+        // Only process main-hand interactions so we don't act on off-hand triggers
+        if (!interactEvent.getHand().equals(EquipmentSlot.HAND)) return;
         Entity entity = interactEvent.getRightClicked();
         Player player = interactEvent.getPlayer();
         if (!(entity instanceof LivingEntity livingEntity)) return;
@@ -49,14 +52,18 @@ public class InteractListeners implements Listener {
         if (!itemInHand.getType().equals(Material.BUCKET)) return;
         PersistentDataContainerView bucketPdcView = itemInHand.getPersistentDataContainer();
         if (bucketPdcView.has(legacyMobTag) || bucketPdcView.has(newMobTag)) return;
+        // Cancel before modifying world state so other listeners see a clean cancellation
+        interactEvent.setCancelled(true);
         ItemStack bucketItem = BucketHandler.getMobBucket(livingEntity);
         BucketHandler.addMobBucketToInventory(player, bucketItem);
-        interactEvent.setCancelled(true);
         livingEntity.remove();
     }
 
     @EventHandler(ignoreCancelled = true)
     public void onUnbucketMob(PlayerInteractEvent interactEvent) {
+        // Only process main-hand interactions; off-hand fires a duplicate event
+        EquipmentSlot hand = interactEvent.getHand();
+        if (hand == null || !hand.equals(EquipmentSlot.HAND)) return;
         Player player = interactEvent.getPlayer();
         ItemStack itemStack = player.getInventory().getItemInMainHand();
         PersistentDataContainerView bucketPdc = itemStack.getPersistentDataContainer();

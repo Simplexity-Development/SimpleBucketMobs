@@ -6,14 +6,14 @@ capture-item-style:
   default:
     name: default
     enchantment-glint: false
-    item-model: default
+    item-model: "minecraft:bucket"
     item-type: BUCKET
     stack-size: default
 captured-item-style:
-  use-resource-pack: true
+  use-resource-pack: false
   default:
     item-type: BUCKET
-    item-model: default
+    item-model: "minecraft:bucket"
     name: "<aqua><display_name> in a Bucket"
     lore:
       - "<gray>A <type_name_cased> sits in the bucket</gray>"

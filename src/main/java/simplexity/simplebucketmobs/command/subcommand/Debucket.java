@@ -29,13 +29,24 @@ public class Debucket extends SubCommand {
             return;
         }
         ItemStack item = player.getInventory().getItem(EquipmentSlot.HAND);
-        PersistentDataContainer pdc = item.getItemMeta().getPersistentDataContainer();
-        String nbt = pdc.get(InteractListeners.legacyMobTag, PersistentDataType.STRING);
-        if (nbt == null) {
+        if (item == null || item.getType().isAir() || item.getItemMeta() == null) {
             player.sendMessage(Message.ERROR_NO_BUCKET_MOB.getParsedMessage());
             return;
         }
-        player.sendMessage(nbt);
+        PersistentDataContainer pdc = item.getItemMeta().getPersistentDataContainer();
+        // Legacy format: NBT stored as a string
+        String nbt = pdc.get(InteractListeners.legacyMobTag, PersistentDataType.STRING);
+        if (nbt != null) {
+            player.sendMessage(nbt);
+            return;
+        }
+        // New format: entity serialized as a byte array
+        byte[] serializedData = pdc.get(InteractListeners.newMobTag, PersistentDataType.BYTE_ARRAY);
+        if (serializedData == null) {
+            player.sendMessage(Message.ERROR_NO_BUCKET_MOB.getParsedMessage());
+            return;
+        }
+        player.sendMessage("Serialized mob data (" + serializedData.length + " bytes, binary format)");
     }
 
     @Override

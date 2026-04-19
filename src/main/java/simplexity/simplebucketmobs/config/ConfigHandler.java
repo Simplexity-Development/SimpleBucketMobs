@@ -42,11 +42,11 @@ public class ConfigHandler {
     public void reloadConfig() {
         SimpleBucketMobs.getPlugin().reloadConfig();
         FileConfiguration config = SimpleBucketMobs.getPlugin().getConfig();
-        bucketTitle = config.getString("bucket-style.title", "<aqua><type> in a Bucket");
-        enchantmentGlint = config.getBoolean("bucket-style.enchantment-glint", true);
-        useResourcePack = config.getBoolean("bucket-style.use-resource-pack", true);
-        mobBucketMaterial = validateMaterial(config.getString("bucket-style.item-type"), Material.BUCKET, "bucket-style.item-type");
-        defaultModel = validateItemModel(config.getString("bucket-style.default-item-model", "minecraft:bucket"));
+        bucketTitle = config.getString("captured-item-style.default.name", "<aqua><display_name> in a Bucket");
+        enchantmentGlint = config.getBoolean("captured-item-style.default.enchantment-glint", true);
+        useResourcePack = config.getBoolean("captured-item-style.use-resource-pack", true);
+        mobBucketMaterial = validateMaterial(config.getString("captured-item-style.default.item-type"), Material.BUCKET, "captured-item-style.default.item-type");
+        defaultModel = validateItemModel(config.getString("captured-item-style.default.item-model", "minecraft:bucket"));
         setupTypes(config);
     }
 
@@ -58,9 +58,6 @@ public class ConfigHandler {
         defaultRule = new BucketRule(defaultAllowed, defaultSneak, defaultPickupAggro, defaultRequiresPermission);
         ConfigurationSection typesSection = config.getConfigurationSection("bucket-type-settings.types");
         if (typesSection == null) return;
-        for (EntityType disallowedEntity : generalDisallowedTypes) {
-            entityRules.put(disallowedEntity, new BucketRule());
-        }
         entityRules.clear();
         for (String entityKey : typesSection.getKeys(false)) {
             EntityType entityType = validateType(entityKey);
