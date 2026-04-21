@@ -11,12 +11,12 @@ import java.util.List;
 
 public class Reload extends SubCommand {
     public Reload() {
-        super("reload", "Reloads SimpleBucketMobs", "/sbm reload", BucketMobPermission.COMMAND_RELOAD);
+        super("reload", "Reloads SimpleBucketMobs", "/sbm reload", BucketMobPermission.COMMAND_RELOAD.getPermission());
     }
 
     @Override
     public void execute(CommandSender sender, String[] args) {
-        if (!sender.hasPermission(BucketMobPermission.COMMAND_RELOAD)) {
+        if (!sender.hasPermission(BucketMobPermission.COMMAND_RELOAD.getPermission())) {
             sender.sendMessage(Message.ERROR_COMMAND_NO_PERMISSION.getParsedMessage());
             return;
         }

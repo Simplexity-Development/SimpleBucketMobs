@@ -39,7 +39,7 @@ public class Locale {
                 Message message = Message.valueOf(key);
                 message.setMessage(locale.getString(key, message.getMessage()));
             } catch (IllegalArgumentException e) {
-                SimpleBucketMobs.getPlugin().getSLF4JLogger().warn("Invalid locale key: {}", key);
+                SimpleBucketMobs.getPlugin().getSLF4JLogger().warn("Invalid locale key: {} - Delete key from locale.yml to stop seeing this message", key);
             }
         }
     }

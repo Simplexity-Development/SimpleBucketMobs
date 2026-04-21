@@ -3,16 +3,34 @@ package simplexity.simplebucketmobs.util;
 import org.bukkit.entity.EntityType;
 import org.bukkit.permissions.Permission;
 import org.bukkit.permissions.PermissionDefault;
+import org.jetbrains.annotations.NotNull;
 
-public class BucketMobPermission {
+public enum BucketMobPermission {
+    DEBUCKET_COMMAND("simplebucketmobs.debucket", "Display serialized mob data from a held Mob Bucket.", PermissionDefault.OP),
+    COMMAND_RELOAD("simplebucketmobs.reload", "Reload plugin configuration files.", PermissionDefault.OP),
+    BUCKET_MOB_BASE("simplebucketmobs.use", "Allows the user to bucket mobs.", PermissionDefault.TRUE);
 
-    public static final Permission DEBUCKET_COMMAND = new Permission("simplebucketmobs.debucket", "Dump saved mob NBT data from Mob Bucket to chat.", PermissionDefault.OP);
-    public static final Permission COMMAND_RELOAD = new Permission("simplebucketmobs.reload", "Reload plugin configuration files.", PermissionDefault.OP);
+    private final String node;
+    private final Permission permission;
 
-    public static final Permission BUCKET_MOB_BASE = new Permission("simplebucketmobs.use", "Allows the user to bucket the specified mob.", PermissionDefault.TRUE);
+    BucketMobPermission(@NotNull String node, @NotNull String description, @NotNull PermissionDefault permissionDefault) {
+        this.node = node;
+        this.permission = new Permission(node, description, permissionDefault);
+    }
 
-    public static Permission getBucketMobPermission(EntityType type){
-        String permName = BUCKET_MOB_BASE + "." + type.toString().toLowerCase();
+    @NotNull
+    public Permission getPermission() {
+        return permission;
+    }
+
+    @NotNull
+    public String getNode() {
+        return node;
+    }
+
+    @NotNull
+    public static Permission getBucketMobPermission(@NotNull EntityType type) {
+        String permName = BUCKET_MOB_BASE.node + "." + type.toString().toLowerCase();
         return new Permission(permName, PermissionDefault.OP);
     }
 }

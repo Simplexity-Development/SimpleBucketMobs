@@ -1,0 +1,8 @@
+name: SimpleBucketMobs
+version: "${version}"
+main: simplexity.simplebucketmobs.SimpleBucketMobs
+api-version: "1.21"
+description: "Shove your mobs into buckets like Axolotls! :D"
+authors:
+  - Rhythmic
+  - Peashooter101

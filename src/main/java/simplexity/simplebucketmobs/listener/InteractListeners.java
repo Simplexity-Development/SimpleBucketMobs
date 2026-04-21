@@ -2,6 +2,8 @@ package simplexity.simplebucketmobs.listener;
 
 import io.papermc.paper.persistence.PersistentDataContainerView;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
+import net.kyori.adventure.key.Key;
+import net.kyori.adventure.sound.Sound;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.block.Block;
@@ -36,26 +38,32 @@ public class InteractListeners implements Listener {
         if (!(entity instanceof LivingEntity livingEntity)) return;
         EntityType type = livingEntity.getType();
         if (!ConfigHandler.getInstance().bucketingAllowed(type)) return;
-        if (ConfigHandler.getInstance().isSneakRequired(type) && !player.isSneaking()) return;
+        ItemStack itemInHand = player.getInventory().getItemInMainHand();
+        if (!itemInHand.getType().equals(Material.BUCKET)) return;
+        PersistentDataContainerView bucketPdcView = itemInHand.getPersistentDataContainer();
+        if (bucketPdcView.has(legacyMobTag) || bucketPdcView.has(newMobTag)) return;
+        // Permission failure falls back to vanilla — player can still interact normally (e.g. milk a cow)
         if (ConfigHandler.getInstance().requiresExplicitPermission(type) &&
-            !player.hasPermission(BucketMobPermission.getBucketMobPermission(type))) return;
+            !player.hasPermission(BucketMobPermission.getBucketMobPermission(type))) {
+            player.sendRichMessage(Message.ERROR_BUCKET_NO_PERMISSION.getMessage(),
+                    Placeholder.parsed("prefix", Message.PREFIX.getMessage()));
+            return;
+        }
+        // From here the plugin owns the interaction; cancel so vanilla can't fire (e.g. cow milking sound)
+        interactEvent.setCancelled(true);
+        if (ConfigHandler.getInstance().isSneakRequired(type) && !player.isSneaking()) return;
         if (livingEntity instanceof Monster monster) {
             LivingEntity target = monster.getTarget();
-            if (target != null && !ConfigHandler.getInstance().canPickupWhenAggro(type)
-                && monster.isAggressive() && target.equals(player)) {
+            // isAggressive() is unreliable for mobs like Slime/Spider — targeting the player is sufficient
+            if (target != null && !ConfigHandler.getInstance().canPickupWhenAggro(type) && target.equals(player)) {
                 player.sendRichMessage(Message.ERROR_BUCKET_HOSTILE_TARGETING.getMessage(),
                         Placeholder.parsed("prefix", Message.PREFIX.getMessage()));
                 return;
             }
         }
-        ItemStack itemInHand = player.getInventory().getItemInMainHand();
-        if (!itemInHand.getType().equals(Material.BUCKET)) return;
-        PersistentDataContainerView bucketPdcView = itemInHand.getPersistentDataContainer();
-        if (bucketPdcView.has(legacyMobTag) || bucketPdcView.has(newMobTag)) return;
-        // Cancel before modifying world state so other listeners see a clean cancellation
-        interactEvent.setCancelled(true);
         ItemStack bucketItem = BucketHandler.getMobBucket(livingEntity);
         BucketHandler.addMobBucketToInventory(player, bucketItem);
+        player.playSound(Sound.sound(Key.key("minecraft", "item.bucket.fill_fish"), Sound.Source.PLAYER, 1.0f, 1.0f));
         livingEntity.remove();
     }
 

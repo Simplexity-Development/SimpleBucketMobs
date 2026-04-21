@@ -12,10 +12,12 @@ import simplexity.simplebucketmobs.listener.BucketRule;
 import java.util.HashMap;
 import java.util.Set;
 
-public class ConfigHandler {
+public class
+ConfigHandler {
 
     private static ConfigHandler instance;
     private static final Logger logger = SimpleBucketMobs.getPlugin().getSLF4JLogger();
+    private static final Material DEFAULT_MATERIAL = Material.BUCKET;
 
     // These can already be bucketed, we don't wanna double-bucket lol
     private final Set<EntityType> generalDisallowedTypes = Set.of(
@@ -42,11 +44,11 @@ public class ConfigHandler {
     public void reloadConfig() {
         SimpleBucketMobs.getPlugin().reloadConfig();
         FileConfiguration config = SimpleBucketMobs.getPlugin().getConfig();
-        bucketTitle = config.getString("captured-item-style.default.name", "<aqua><display_name> in a Bucket");
-        enchantmentGlint = config.getBoolean("captured-item-style.default.enchantment-glint", true);
-        useResourcePack = config.getBoolean("captured-item-style.use-resource-pack", true);
-        mobBucketMaterial = validateMaterial(config.getString("captured-item-style.default.item-type"), Material.BUCKET, "captured-item-style.default.item-type");
-        defaultModel = validateItemModel(config.getString("captured-item-style.default.item-model", "minecraft:bucket"));
+        bucketTitle = config.getString("mob-bucket-style.default.name", "<aqua><display_name> in a Bucket");
+        enchantmentGlint = config.getBoolean("mob-bucket-style.default.enchantment-glint", true);
+        useResourcePack = config.getBoolean("mob-bucket-style.use-resource-pack", true);
+        mobBucketMaterial = validateMaterial(config.getString("mob-bucket-style.default.item-type"));
+        defaultModel = validateItemModel(config.getString("mob-bucket-style.default.item-model", "minecraft:bucket"));
         setupTypes(config);
     }
 
@@ -76,7 +78,6 @@ public class ConfigHandler {
         }
     }
 
-
     private EntityType validateType(String entityName) {
         try {
             return EntityType.valueOf(entityName.toUpperCase());
@@ -86,7 +87,7 @@ public class ConfigHandler {
         return null;
     }
 
-    private NamespacedKey validateItemModel(String modelLocation){
+    private NamespacedKey validateItemModel(String modelLocation) {
         NamespacedKey key = NamespacedKey.fromString(modelLocation);
         if (key == null) {
             logger.warn("Invalid item model: {} - using default model 'minecraft:bucket'", modelLocation);
@@ -95,20 +96,18 @@ public class ConfigHandler {
         return key;
     }
 
-    @SuppressWarnings("SameParameterValue")
-    private Material validateMaterial(String materialName, Material defaultMaterial, String path) {
+    private Material validateMaterial(String materialName) {
         if (materialName == null) {
-            logger.warn("No material found for {}, using default material: {}", path, defaultMaterial);
-            return defaultMaterial;
+            logger.warn("No material found for mob-bucket-style.default.item-type, using default material: {}", DEFAULT_MATERIAL);
+            return DEFAULT_MATERIAL;
         }
         Material material = Material.getMaterial(materialName);
         if (material == null) {
-            logger.warn("Invalid material in '{}': {} - using default material: {}", path, materialName, defaultMaterial);
-            return defaultMaterial;
+            logger.warn("Invalid material in 'mob-bucket-style.default.item-type': {} - using default material: {}", materialName, DEFAULT_MATERIAL);
+            return DEFAULT_MATERIAL;
         }
         return material;
     }
-
 
     public boolean isUsingResourcePack() {
         return useResourcePack;
@@ -119,19 +118,19 @@ public class ConfigHandler {
     }
 
     public boolean bucketingAllowed(EntityType type) {
-        return getRule(type).isAllowed();
+        return getRule(type).allow;
     }
 
     public boolean isSneakRequired(EntityType type) {
-        return getRule(type).isSneakRequired();
+        return getRule(type).sneakRequired;
     }
 
     public boolean canPickupWhenAggro(EntityType type) {
-        return getRule(type).canPickupWhenAggro();
+        return getRule(type).pickupWhenAggro;
     }
 
     public boolean requiresExplicitPermission(EntityType type) {
-        return getRule(type).shouldRequirePermission();
+        return getRule(type).requiresPermission;
     }
 
     public boolean isEnchantmentGlint() {

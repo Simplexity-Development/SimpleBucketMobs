@@ -15,7 +15,7 @@ import java.util.List;
 
 public class Debucket extends SubCommand {
     public Debucket() {
-        super("debucket", "Allows you to dump the JSON NBT data to the player chat.", "/sbm debucket", BucketMobPermission.DEBUCKET_COMMAND);
+        super("debucket", "Allows you to dump the JSON NBT data to the player chat.", "/sbm debucket", BucketMobPermission.DEBUCKET_COMMAND.getPermission());
     }
 
     @Override
@@ -24,7 +24,7 @@ public class Debucket extends SubCommand {
             sender.sendMessage(Message.ERROR_NOT_A_PLAYER.getParsedMessage());
             return;
         }
-        if (!sender.hasPermission(BucketMobPermission.DEBUCKET_COMMAND)) {
+        if (!sender.hasPermission(BucketMobPermission.DEBUCKET_COMMAND.getPermission())) {
             sender.sendMessage(Message.ERROR_COMMAND_NO_PERMISSION.getParsedMessage());
             return;
         }

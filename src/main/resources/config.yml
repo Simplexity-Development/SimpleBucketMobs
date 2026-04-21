@@ -2,14 +2,14 @@
 # <type_name_cased>: Returns the literal type of the entity but not screaming (ie: Sheep)
 # <display_name>: Returns the display name or the type_name_cased if it is not named (ie: _jeb)
 
-capture-item-style:
+capture-tool-style:
   default:
     name: default
     enchantment-glint: false
     item-model: "minecraft:bucket"
     item-type: BUCKET
     stack-size: default
-captured-item-style:
+mob-bucket-style:
   use-resource-pack: false
   default:
     item-type: BUCKET
@@ -26,8 +26,8 @@ captured-item-style:
 bucket-type-settings:
   default:
     allow: false
-    capture-item: default
-    captured-item: default
+    capture-tool: default
+    mob-bucket: default
     sneak-required: false
     pickup-when-aggro: false
     requires-permission: false
