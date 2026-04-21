@@ -1,21 +1,51 @@
 # <type>: Returns the literal type of the entity (ie: SHEEP)
 # <type_name_cased>: Returns the literal type of the entity but not screaming (ie: Sheep)
 # <display_name>: Returns the display name or the type_name_cased if it is not named (ie: _jeb)
-bucket-title: "<aqua><display_name> in a Bucket"
+
+capture-tool-style:
+  default:
+    name: default
+    enchantment-glint: false
+    item-model: "minecraft:bucket"
+    item-type: BUCKET
+    stack-size: default
+mob-bucket-style:
+  use-resource-pack: false
+  default:
+    item-type: BUCKET
+    item-model: "minecraft:bucket"
+    name: "<aqua><display_name> in a Bucket"
+    lore:
+      - "<gray>A <type_name_cased> sits in the bucket</gray>"
+    enchantment-glint: true
 # Whether the plugin should set the textures to the ones specified in texture.yml, defaults are from
 # https://modrinth.com/resourcepack/bucket-mobs-resources/versions
-use-resource-pack: true
-
-# Hostile mobs cannot be bucketed if they are targeting you.
-no-hostile-targeting: true
-# The allowed types of entities that the bucket can be used on.
+# The settings for the bucket-able mobs, or non-bucketable mobs. Fields left empty or non-existent will fall back to default
+# And if there is not a default, will default to 'false'
 # List of Entity Types here: https://purpurmc.org/javadoc/org/bukkit/entity/EntityType.html
-# Only LivingEntity types can be used (unless it's an Armor Stand / Player, it will not work).
-#   Fun fact: Armor Stand is a "Living Entity".
-allowed-types:
-  - SHEEP
-  - COW
-  - PIG
-# If true, the above list will be the types that are not allowed to be picked up.
-# Note, mobs that can already be picked up with a bucket are disabled by default.
-list-is-blacklist: false
+bucket-type-settings:
+  default:
+    allow: false
+    capture-tool: default
+    mob-bucket: default
+    sneak-required: false
+    pickup-when-aggro: false
+    requires-permission: false
+  types:
+    VILLAGER:
+      allow: true
+      sneak-required: true
+      requires-permission: true
+    SLIME:
+      allow: true
+      pickup-when-aggro: true
+    SHEEP:
+      allow: true
+    COW:
+      allow: true
+      sneak-required: true
+    PIG:
+      allow: true
+    MOOSHROOM:
+      allow: true
+      sneak-required: true

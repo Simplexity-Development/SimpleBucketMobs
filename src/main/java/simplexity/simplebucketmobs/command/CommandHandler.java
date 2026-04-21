@@ -1,24 +1,30 @@
 package simplexity.simplebucketmobs.command;
 
-import simplexity.simplebucketmobs.util.Message;
-import org.bukkit.command.Command;
+import io.papermc.paper.command.brigadier.BasicCommand;
+import io.papermc.paper.command.brigadier.CommandSourceStack;
 import org.bukkit.command.CommandSender;
-import org.bukkit.command.TabExecutor;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import simplexity.simplebucketmobs.util.Message;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
 
-public class CommandHandler implements TabExecutor {
+@SuppressWarnings("UnstableApiUsage")
+public class CommandHandler implements BasicCommand {
 
     public static final List<String> emptyList = Collections.unmodifiableList(new ArrayList<>());
     public static HashMap<String, SubCommand> subcommandList = new HashMap<>();
 
     @Override
-    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
+    public void execute(@NotNull CommandSourceStack source, @NotNull String[] args) {
+        CommandSender sender = source.getSender();
         if (args.length == 0) {
             // TODO: Help
-            return true;
+            return;
         }
         String subcommand = args[0].toLowerCase();
         if (subcommandList.containsKey(subcommand)) {
@@ -26,11 +32,12 @@ public class CommandHandler implements TabExecutor {
         } else {
             sender.sendMessage(Message.ERROR_COMMAND_NOT_FOUND.getParsedMessage());
         }
-        return true;
     }
 
     @Override
-    public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {        if (args.length == 0) return new ArrayList<>();
+    public @NotNull Collection<String> suggest(@NotNull CommandSourceStack source, @NotNull String[] args) {
+        CommandSender sender = source.getSender();
+        if (args.length == 0) return new ArrayList<>();
         if (args.length == 1) {
             List<String> list = new ArrayList<>();
             for (SubCommand cmd : subcommandList.values()) {
@@ -40,7 +47,8 @@ public class CommandHandler implements TabExecutor {
         }
         String subcommand = args[0].toLowerCase();
         if (subcommandList.containsKey(subcommand) && sender.hasPermission(subcommandList.get(subcommand).getPermission())) {
-            return subcommandList.get(subcommand).getSubcommandArguments(sender, args);
+            List<String> suggestions = subcommandList.get(subcommand).getSubcommandArguments(sender, args);
+            return suggestions != null ? suggestions : List.of();
         }
         return new ArrayList<>();
     }
