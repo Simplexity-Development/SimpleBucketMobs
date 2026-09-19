@@ -1,15 +1,13 @@
 package simplexity.simplebucketmobs.config;
 
+import org.bukkit.DyeColor;
 import org.bukkit.NamespacedKey;
-import simplexity.simplebucketmobs.SimpleBucketMobs;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.Tag;
-import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.entity.EntityType;
-import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.entity.*;
+import org.slf4j.Logger;
+import simplexity.simplebucketmobs.SimpleBucketMobs;
 
 import java.io.File;
 import java.io.IOException;
@@ -21,6 +19,7 @@ public class Texture {
     private final String fileName = "texture.yml";
     private final File dataFile = new File(SimpleBucketMobs.getPlugin().getDataFolder(), fileName);
     private final FileConfiguration texture = new YamlConfiguration();
+    private final Logger logger = SimpleBucketMobs.getPlugin().getSLF4JLogger();
 
     private Texture() {
         if (!dataFile.exists()) SimpleBucketMobs.getPlugin().saveResource(fileName, false);
@@ -32,91 +31,149 @@ public class Texture {
         return instance;
     }
 
-    public FileConfiguration getTextureConfig() { return texture; }
+    public FileConfiguration getTextureConfig() {
+        return texture;
+    }
 
     public void reloadTextureConfig() {
-        try { texture.load(dataFile); }
-        catch (IOException | InvalidConfigurationException e) { e.printStackTrace(); }
+        try {
+            texture.load(dataFile);
+        } catch (IOException | InvalidConfigurationException e) {
+            logger.error("Failed to load {}", fileName, e);
+        }
     }
 
-    public void setCustomData(EntityType type, ItemMeta meta, CompoundTag tag) {
-        ConfigurationSection section = texture.getConfigurationSection(type.toString());
-        if (section == null) return;
-        setNewItemModel(meta, section);
-        if (surprise(type, meta, tag)) return;
-        String value = null;
-        // Until we hit a dead end or found the path...
-        while (true) {
-            String ymlKey = null;
-            // Find a valid key to look into.
-            for (String key : section.getKeys(false)) {
-                // If the tag does not exist, ignore this value.
-                if (!tag.contains(key)) continue;
-                ymlKey = key;
-                break;
-            }
-            if (ymlKey == null) break;
-            // If the key does not lead to a configuration section, we cannot continue.
-            if (!section.isConfigurationSection(ymlKey)) {
-                break;
-            }
-            // If the tag is not a CompoundTag, this is the value we need.
-            // TODO: Make it so if a value "exists" it is true, not just that the value is set to a specific one.
-            if (!tag.contains(ymlKey, 10)) {
-                Tag currentTag = tag.get(ymlKey);
-                assert currentTag != null; // Guaranteed, we checked.
-                value = currentTag.getAsString();
-                section = section.getConfigurationSection(ymlKey);
-                break;
-            }
-            // Otherwise, go deeper...
-            section = section.getConfigurationSection(ymlKey);
-            tag = tag.getCompound(ymlKey);
-            assert section != null; // Guaranteed, ymlKey was pulled out of the keySet and the set was unmodified.
+    public NamespacedKey getItemModel(LivingEntity entity) {
+        String itemModelLocation = locateItemModel(entity);
+        NamespacedKey key = NamespacedKey.fromString(itemModelLocation);
+        if (key == null) {
+            logger.warn("Invalid or missing item model string for entity: {} Value: '{}'", entity.getType(), itemModelLocation);
+            return ConfigHandler.getInstance().getDefaultModel();
         }
-        if (value == null) return;
-        assert section != null; // Guaranteed, ymlKey was pulled out of the keySet and the set was unmodified.
-        setNewItemModel(value, meta, section);
+        return key;
     }
 
-    private boolean surprise(EntityType type, ItemMeta meta, CompoundTag tag) {
-        ConfigurationSection section = texture.getConfigurationSection("special");
-        if (section == null) return false;
-        if (type == EntityType.CHICKEN && tag.getShort("Fire") > 0)  {
-            setNewItemModel("fried", meta, section);
-            return true;
-        }
-        // Dog having owner workaround. TODO: Be smarter and figure a solution.
-        /*if (type == EntityType.WOLF && tag.hasUUID("Owner")) {
-            meta.setCustomModelData(section.getInt("tamed_wolf", 0));
-            return true;
-        }
-        // Toast Rabbit workaround.
-         TODO: Fix Toast Rabbit Workaround or be smarter and figure a solution.
-        if (type == EntityType.RABBIT) {
-            System.out.println("RABBIT");
-            Tag name =  tag.get("CustomName");
-            if (name != null) {
-                System.out.println("RABBIT NAME");
-                 Component nameComponent = SimpleBucketMobs.getGsonSerializer().deserialize(name.toString());
-                 if (SimpleBucketMobs.getMiniMessage().stripTags(nameString).equals("Toast")) {
-                     System.out.println("RABBIT NAME TOAST");
-                     meta.setCustomModelData(section.getInt("toast", 0));
-                     return true;
-                 }
-            }
-        }
-        */
-        return false;
+    private String locateItemModel(LivingEntity entity) {
+        if (entity instanceof Cat cat) return getCatItemModel(cat);
+        if (entity instanceof Chicken chicken) return getChickenItemModel(chicken);
+        if (entity instanceof MushroomCow mooshroom) return getMooshroomItemModel(mooshroom);
+        if (entity instanceof Cow cow) return getCowItemModel(cow);
+        if (entity instanceof Fox fox) return getFoxItemModel(fox);
+        if (entity instanceof Frog frog) return getFrogItemModel(frog);
+        if (entity instanceof Horse horse) return getHorseItemModel(horse);
+        // Have to do this first otherwise llama will eat it
+        if (entity instanceof TraderLlama traderLlama) return getTraderLlamaItemModel(traderLlama);
+        if (entity instanceof Llama llama) return getLlamaItemModel(llama);
+        if (entity instanceof Parrot parrot) return getParrotItemModel(parrot);
+        if (entity instanceof Pig pig) return getPigItemModel(pig);
+        if (entity instanceof Rabbit rabbit) return getRabbitItemModel(rabbit);
+        if (entity instanceof Sheep sheep) return getSheepItemModel(sheep);
+        if (entity instanceof Shulker shulker) return getShulkerItemModel(shulker);
+        if (entity instanceof Villager villager) return getVillagerItemModel(villager);
+        if (entity instanceof Wolf wolf) return getWolfItemModel(wolf);
+        return texture.getString(entity.getType().toString().toLowerCase() + ".default", "minecraft:bucket");
     }
-    private void setNewItemModel(ItemMeta meta, ConfigurationSection section) {
-        setNewItemModel("default", meta, section);
+
+    public String getCatItemModel(Cat cat) {
+        Cat.Type catType = cat.getCatType();
+        String defaultTexture = texture.getString("cat.default", "minecraft:bucket");
+        return texture.getString("cat.type." + catType.toString().toLowerCase(), defaultTexture);
     }
-    private void setNewItemModel(String key, ItemMeta meta, ConfigurationSection section) {
-        String modelLocation = section.getString(key, "minecraft:bucket");
-        String[] split = modelLocation.split(":");
-        NamespacedKey namespacedKey = new NamespacedKey(split[0], split[1]);
-        meta.setItemModel(namespacedKey);
+
+    public String getChickenItemModel(Chicken chicken) {
+        EntityType chickenType = chicken.getType();
+        String defaultTexture = texture.getString("chicken.default", "minecraft:bucket");
+        return texture.getString("chicken.type." + chickenType.toString().toLowerCase(), defaultTexture);
+    }
+
+    public String getCowItemModel(Cow cow) {
+        EntityType cowType = cow.getType();
+        String defaultTexture = texture.getString("cow.default", "minecraft:bucket");
+        return texture.getString("cow.type." + cowType.toString().toLowerCase(), defaultTexture);
+    }
+
+    public String getFoxItemModel(Fox fox) {
+        Fox.Type foxType = fox.getFoxType();
+        String defaultTexture = texture.getString("fox.default", "minecraft:bucket");
+        return texture.getString("fox.type." + foxType.toString().toLowerCase(), defaultTexture);
+    }
+
+    public String getFrogItemModel(Frog frog) {
+        Frog.Variant frogType = frog.getVariant();
+        String defaultTexture = texture.getString("frog.default", "minecraft:bucket");
+        return texture.getString("frog.type." + frogType.toString().toLowerCase(), defaultTexture);
+    }
+
+    public String getHorseItemModel(Horse horse) {
+        Horse.Color color = horse.getColor();
+        Horse.Style style = horse.getStyle();
+        String defaultTexture = texture.getString("horse.default", "minecraft:bucket");
+        String colorKey = color.name().toLowerCase();
+        String styleKey = style.name().toLowerCase();
+        String key = colorKey + "_" + styleKey;
+        return texture.getString("horse.type." + key, defaultTexture);
+    }
+
+    public String getLlamaItemModel(Llama llama) {
+        Llama.Color llamaColor = llama.getColor();
+        String defaultTexture = texture.getString("llama.default", "minecraft:bucket");
+        return texture.getString("llama.type." + llamaColor.toString().toLowerCase(), defaultTexture);
+    }
+
+    public String getMooshroomItemModel(MushroomCow mooshroom) {
+        MushroomCow.Variant mooshroomType = mooshroom.getVariant();
+        String defaultTexture = texture.getString("mooshroom.default", "minecraft:bucket");
+        return texture.getString("mooshroom.type." + mooshroomType.toString().toLowerCase(), defaultTexture);
+    }
+
+    public String getParrotItemModel(Parrot parrot) {
+        Parrot.Variant parrotType = parrot.getVariant();
+        String defaultTexture = texture.getString("parrot.default", "minecraft:bucket");
+        return texture.getString("parrot.type." + parrotType.toString().toLowerCase(), defaultTexture);
+    }
+
+    public String getPigItemModel(Pig pig) {
+        EntityType pigType = pig.getType();
+        String defaultTexture = texture.getString("pig.default", "minecraft:bucket");
+        return texture.getString("pig.type." + pigType.toString().toLowerCase(), defaultTexture);
+    }
+
+    public String getRabbitItemModel(Rabbit rabbit) {
+        Rabbit.Type rabbitType = rabbit.getRabbitType();
+        String defaultTexture = texture.getString("rabbit.default", "minecraft:bucket");
+        return texture.getString("rabbit.type." + rabbitType.toString().toLowerCase(), defaultTexture);
+    }
+
+    public String getSheepItemModel(Sheep sheep) {
+        DyeColor sheepType = sheep.getColor();
+        String defaultTexture = texture.getString("sheep.default", "minecraft:bucket");
+        if (sheepType == null) return defaultTexture;
+        return texture.getString("sheep.type." + sheepType.toString().toLowerCase(), defaultTexture);
+    }
+
+    public String getShulkerItemModel(Shulker shulker) {
+        DyeColor shulkerType = shulker.getColor();
+        String defaultTexture = texture.getString("shulker.default", "minecraft:bucket");
+        if (shulkerType == null) return defaultTexture;
+        return texture.getString("shulker.type." + shulkerType.toString().toLowerCase(), defaultTexture);
+    }
+
+    public String getTraderLlamaItemModel(TraderLlama traderLlama) {
+        Llama.Color llamaColor = traderLlama.getColor();
+        String defaultTexture = texture.getString("trader_llama.default", "minecraft:bucket");
+        return texture.getString("trader_llama.type." + llamaColor.toString().toLowerCase(), defaultTexture);
+    }
+
+    public String getVillagerItemModel(Villager villager) {
+        Villager.Profession villagerProfession = villager.getProfession();
+        String defaultTexture = texture.getString("villager.default", "minecraft:bucket");
+        return texture.getString("villager.type." + villagerProfession.toString().toLowerCase(), defaultTexture);
+    }
+
+    public String getWolfItemModel(Wolf wolf) {
+        Wolf.Variant wolfType = wolf.getVariant();
+        String defaultTexture = texture.getString("wolf.default", "minecraft:bucket");
+        return texture.getString("wolf.type." + wolfType.toString().toLowerCase(), defaultTexture);
     }
 
 }
