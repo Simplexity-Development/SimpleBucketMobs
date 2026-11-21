@@ -42,6 +42,8 @@ public class InteractListeners implements Listener {
         if (!itemInHand.getType().equals(Material.BUCKET)) return;
         PersistentDataContainerView bucketPdcView = itemInHand.getPersistentDataContainer();
         if (bucketPdcView.has(legacyMobTag) || bucketPdcView.has(newMobTag)) return;
+        // Without the required sneak this is not a bucketing attempt; leave it to vanilla (e.g. milk a cow)
+        if (ConfigHandler.getInstance().isSneakRequired(type) && !player.isSneaking()) return;
         // Permission failure falls back to vanilla — player can still interact normally (e.g. milk a cow)
         if (ConfigHandler.getInstance().requiresExplicitPermission(type) &&
             !player.hasPermission(BucketMobPermission.getBucketMobPermission(type))) {
@@ -51,7 +53,6 @@ public class InteractListeners implements Listener {
         }
         // From here the plugin owns the interaction; cancel so vanilla can't fire (e.g. cow milking sound)
         interactEvent.setCancelled(true);
-        if (ConfigHandler.getInstance().isSneakRequired(type) && !player.isSneaking()) return;
         if (livingEntity instanceof Monster monster) {
             LivingEntity target = monster.getTarget();
             // isAggressive() is unreliable for mobs like Slime/Spider — targeting the player is sufficient
